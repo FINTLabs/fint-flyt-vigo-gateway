@@ -1,15 +1,8 @@
-# FINT FLYT INSTANCE GATEWAY TEMPLATE
+# FINT FLYT OPPFOLGINGSTJENETEN GATEWAY
 
 ## Overview
-This template serves as a skeleton gateway with example code for creating specific instance-gateways in FINT Flyt. Its primary function is to handle POST requests containing data, which is then processed and published to other microservices through Kafka inside the FINT Flyt infrastructure.
+This code creates a gateway for VIGO OT.
 
-## Getting Started
-To use this template, you need to customize it according to your specific requirements. Follow the steps below to configure and deploy your instance of the gateway.
-
-### Rename `sourceApplication`
-The `sourceApplication` represents the data source sending information to this gateway (e.g., `egrunnerverv`, `acos`, `rf13.50`, etc.). Rename it throughout the project to reflect your specific source application.
-
-- **Example**: Rename `fint-flyt-sourceapplication-instance-gateway` to `fint-flyt-rf1350-instance-gateway`.
 
 ### Kustomize Configuration
 Adjust the following setting in the `base/flais.yaml`:
