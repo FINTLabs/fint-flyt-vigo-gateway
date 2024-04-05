@@ -24,6 +24,7 @@ on:
           - nfk-no
           - vlfk-no
           - trondelagfylke-no
+          - ofk-no
 
 env:
   REGISTRY: ghcr.io
