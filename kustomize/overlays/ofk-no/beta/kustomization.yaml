@@ -19,7 +19,7 @@ patches:
         value: "ofk.no"
       - op: add
         path: "/spec/url/basePath"
-        value: "/beta"
+        value: "/beta/ofk-no"
       - op: replace
         path: "/spec/ingress/basePath"
         value: "/beta/ofk-no/api/oppfolgingstjenesten"

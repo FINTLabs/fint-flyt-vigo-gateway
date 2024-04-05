@@ -19,7 +19,7 @@ patches:
         value: "fintlabs.no"
       - op: add
         path: "/spec/url/basePath"
-        value: "/beta"
+        value: "/beta/fintlabs-no"
       - op: replace
         path: "/spec/ingress/basePath"
         value: "/beta/fintlabs-no/api/oppfolgingstjenesten"
