@@ -47,8 +47,6 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                 Map.entry("inntaksadressePostnummer", incomingInstance.getInntaksadresse().getPostnummer()),
                 Map.entry("inntaksadressePoststed", incomingInstance.getInntaksadresse().getPoststed()),
 
-                Map.entry("arkivreferanse", incomingInstance.getArkivreferanse()),
-
                 Map.entry("dokumentTittel", incomingInstance.getDokument().getTittel()),
                 Map.entry("dokumentDato", incomingInstance.getDokument().getDato()),
                 Map.entry("dokumentFilnavn", incomingInstance.getDokument().getFilnavn()),
