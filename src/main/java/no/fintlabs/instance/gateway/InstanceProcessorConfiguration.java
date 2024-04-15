@@ -2,7 +2,7 @@ package no.fintlabs.instance.gateway;
 
 import no.fintlabs.gateway.instance.InstanceProcessor;
 import no.fintlabs.gateway.instance.InstanceProcessorFactoryService;
-import no.fintlabs.instance.gateway.model.oppfolgingstjenesten.IncomingInstance;
+import no.fintlabs.instance.gateway.model.vigo.IncomingInstance;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

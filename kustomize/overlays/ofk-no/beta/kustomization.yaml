@@ -6,7 +6,7 @@ resources:
   - ../../../base
 
 commonLabels:
-  app.kubernetes.io/instance: fint-flyt-oppfolgingstjenesten-gateway_ofk_no
+  app.kubernetes.io/instance: fint-flyt-vigo-gateway_ofk_no
   fintlabs.no/org-id: ofk.no
 
 patches:
@@ -22,8 +22,8 @@ patches:
         value: "/beta/ofk-no"
       - op: replace
         path: "/spec/ingress/basePath"
-        value: "/beta/ofk-no/api/oppfolgingstjenesten"
+        value: "/beta/ofk-no/api/vigo"
     target:
       kind: Application
-      name: fint-flyt-oppfolgingstjenesten-gateway
+      name: fint-flyt-vigo-gateway
 

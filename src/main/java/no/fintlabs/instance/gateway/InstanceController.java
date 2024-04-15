@@ -2,7 +2,7 @@ package no.fintlabs.instance.gateway;
 
 import lombok.extern.slf4j.Slf4j;
 import no.fintlabs.gateway.instance.InstanceProcessor;
-import no.fintlabs.instance.gateway.model.oppfolgingstjenesten.IncomingInstance;
+import no.fintlabs.instance.gateway.model.vigo.IncomingInstance;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

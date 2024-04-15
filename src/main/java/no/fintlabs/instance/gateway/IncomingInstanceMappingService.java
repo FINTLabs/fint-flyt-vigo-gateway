@@ -4,7 +4,7 @@ import no.fintlabs.gateway.instance.InstanceMapper;
 import no.fintlabs.gateway.instance.model.File;
 import no.fintlabs.gateway.instance.model.instance.InstanceObject;
 import no.fintlabs.gateway.instance.web.FileClient;
-import no.fintlabs.instance.gateway.model.oppfolgingstjenesten.IncomingInstance;
+import no.fintlabs.instance.gateway.model.vigo.IncomingInstance;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
