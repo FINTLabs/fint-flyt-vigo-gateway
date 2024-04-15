@@ -16,7 +16,7 @@ public class IncomingInstance {
 
     @NotNull
     private final String instansId;
-    private final String arkivreferanse;
+    private final String dokumenttype;
     private final Personalia personalia;
     private final Kontaktinformasjon kontaktinformasjon;
     private final Inntaksadresse inntaksadresse;
