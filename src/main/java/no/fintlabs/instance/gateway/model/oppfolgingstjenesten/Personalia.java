@@ -13,5 +13,6 @@ public class Personalia {
 
     private String fodselsnummer;
     private String fornavn;
+    private String mellomnavn;
     private String etternavn;
 }

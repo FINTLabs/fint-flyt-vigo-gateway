@@ -38,6 +38,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
         return Stream.of(
                 Map.entry("personaliaFodselsnummer", incomingInstance.getPersonalia().getFodselsnummer()),
                 Map.entry("personaliaFornavn", incomingInstance.getPersonalia().getFornavn()),
+                Map.entry("personaliaMellomnavn", incomingInstance.getPersonalia().getMellomnavn()),
                 Map.entry("personaliaEtternavn", incomingInstance.getPersonalia().getEtternavn()),
 
                 Map.entry("kontaktinformasjonTelefonnummer", incomingInstance.getKontaktinformasjon().getTelefonnummer()),
