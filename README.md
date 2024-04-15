@@ -1,7 +1,7 @@
-# FINT FLYT OPPFOLGINGSTJENETEN GATEWAY
+# FINT FLYT VIGO GATEWAY
 
 ## Overview
-This code creates a gateway for VIGO OT.
+This code creates a gateway for VIGO.
 
 
 ### Kustomize Configuration

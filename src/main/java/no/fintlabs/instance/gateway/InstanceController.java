@@ -16,7 +16,7 @@ import static no.fintlabs.resourceserver.UrlPaths.EXTERNAL_API;
 
 @Slf4j
 @RestController
-@RequestMapping(EXTERNAL_API + "/oppfolgingstjenesten/instances")
+@RequestMapping(EXTERNAL_API + "/vigo/instances")
 public class InstanceController {
 
     private final InstanceProcessor<IncomingInstance> instanceProcessor;
