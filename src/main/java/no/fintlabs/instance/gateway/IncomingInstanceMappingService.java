@@ -32,9 +32,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
         return postFile(sourceApplicationId, incomingInstance)
                 .map(uuid -> InstanceObject.builder()
                         .valuePerKey(toValuePerKey(incomingInstance, uuid))
-                        .build())
-                .doOnNext(instanceObject -> log.info("NEXT GENERATION: {}", instanceObject.toString()))
-                .log("YOLO");
+                        .build());
     }
 
     private static Map<String, String> toValuePerKey(IncomingInstance incomingInstance, UUID uuid) {
