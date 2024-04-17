@@ -1,5 +1,6 @@
 package no.fintlabs.instance.gateway;
 
+import lombok.extern.slf4j.Slf4j;
 import no.fintlabs.gateway.instance.InstanceMapper;
 import no.fintlabs.gateway.instance.model.File;
 import no.fintlabs.gateway.instance.model.instance.InstanceObject;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
+@Slf4j
 public class IncomingInstanceMappingService implements InstanceMapper<IncomingInstance> {
 
     private final FileClient fileClient;
@@ -30,7 +32,8 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
         return postFile(sourceApplicationId, incomingInstance)
                 .map(uuid -> InstanceObject.builder()
                         .valuePerKey(toValuePerKey(incomingInstance, uuid))
-                        .build());
+                        .build())
+                .log("YOLO");
     }
 
     private static Map<String, String> toValuePerKey(IncomingInstance incomingInstance, UUID uuid) {
