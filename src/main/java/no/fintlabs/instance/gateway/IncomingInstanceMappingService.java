@@ -33,6 +33,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                 .map(uuid -> InstanceObject.builder()
                         .valuePerKey(toValuePerKey(incomingInstance, uuid))
                         .build())
+                .doOnNext(instanceObject -> log.info("NEXT GENERATION: {}", instanceObject.toString()))
                 .log("YOLO");
     }
 
