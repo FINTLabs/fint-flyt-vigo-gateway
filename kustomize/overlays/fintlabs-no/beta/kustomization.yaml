@@ -23,6 +23,11 @@ patches:
       - op: replace
         path: "/spec/ingress/basePath"
         value: "/beta/fintlabs-no/api/vigo"
+      - op: add
+        path: "/spec/env/-"
+        value:
+          name: "logging.level.no.fintlabs.instance.gateway"
+          value: "DEBUG"
     target:
       kind: Application
       name: fint-flyt-vigo-gateway
