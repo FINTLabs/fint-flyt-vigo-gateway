@@ -17,11 +17,9 @@ public class InstanceProcessorConfiguration {
             IncomingInstanceMappingService incomingInstanceMappingService
     ) {
         return instanceProcessorFactoryService.createInstanceProcessor(
-                incommingInstance -> Optional.ofNullable(incommingInstance.getDokumenttype()),
+                incomingInstance -> Optional.ofNullable(incomingInstance.getDokumenttype()),
                 incomingInstance -> Optional.ofNullable(incomingInstance.getInstansId()),
                 incomingInstanceMappingService
         );
     }
-
-
 }

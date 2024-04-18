@@ -95,6 +95,15 @@ class IncomingInstanceMappingServiceTest {
                         .filnavn("dokument.pdf")
                         .format("text/plain")
                         .build())
+
+                .tilleggsinformasjon(Tilleggsinformasjon.builder()
+                        .skolear("2024/2025")
+                        .skolenummer("1")
+                        .skolenavn("Oslo katedralskole")
+                        .programomradekode("LA1")
+                        .programomradenavn("Latin")
+                        .sokertype("Ordinær")
+                        .build())
                 .build();
     }
 }

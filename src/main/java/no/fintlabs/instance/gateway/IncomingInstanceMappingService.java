@@ -37,6 +37,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
 
     private static Map<String, String> toValuePerKey(IncomingInstance incomingInstance, UUID uuid) {
 
+        assert incomingInstance.getTilleggsinformasjon() != null;
         return Stream.of(
                 Map.entry("personaliaFodselsnummer", incomingInstance.getPersonalia().getFodselsnummer()),
                 Map.entry("personaliaFornavn", incomingInstance.getPersonalia().getFornavn()),
@@ -54,7 +55,14 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                 Map.entry("dokumentDato", incomingInstance.getDokument().getDato()),
                 Map.entry("dokumentFilnavn", incomingInstance.getDokument().getFilnavn()),
                 Map.entry("dokumentFormat", incomingInstance.getDokument().getFormat()),
-                Map.entry("dokumentFil", uuid.toString()))
+                Map.entry("dokumentFil", uuid.toString()),
+
+                Map.entry("tilleggsinformasjonSkolear", incomingInstance.getTilleggsinformasjon() != null ? incomingInstance.getTilleggsinformasjon().getSkolear() : ""),
+                Map.entry("tilleggsinformasjonSkolenummer", incomingInstance.getTilleggsinformasjon() != null ? incomingInstance.getTilleggsinformasjon().getSkolenummer() : ""),
+                Map.entry("tilleggsinformasjonSkolenavn", incomingInstance.getTilleggsinformasjon() != null ? incomingInstance.getTilleggsinformasjon().getSkolenavn() : ""),
+                Map.entry("tilleggsinformasjonProgramomradekode", incomingInstance.getTilleggsinformasjon() != null ? incomingInstance.getTilleggsinformasjon().getProgramomradekode() : ""),
+                Map.entry("tilleggsinformasjonProgramomradenavn", incomingInstance.getTilleggsinformasjon() != null ? incomingInstance.getTilleggsinformasjon().getProgramomradenavn() : ""),
+                Map.entry("tilleggsinformasjonSokertype", incomingInstance.getTilleggsinformasjon() != null ? incomingInstance.getTilleggsinformasjon().getSokertype() : ""))
 
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }

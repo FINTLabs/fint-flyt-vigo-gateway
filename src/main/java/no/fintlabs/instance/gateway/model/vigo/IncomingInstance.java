@@ -21,4 +21,5 @@ public class IncomingInstance {
     private final Kontaktinformasjon kontaktinformasjon;
     private final Inntaksadresse inntaksadresse;
     private final Dokument dokument;
+    private final Tilleggsinformasjon tilleggsinformasjon;
 }
