@@ -1,0 +1,100 @@
+package no.fintlabs.instance.gateway;
+
+import no.fintlabs.gateway.instance.model.File;
+import no.fintlabs.gateway.instance.model.instance.InstanceObject;
+import no.fintlabs.gateway.instance.web.FileClient;
+import no.fintlabs.instance.gateway.model.vigo.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Mono;
+
+import java.util.Map;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+class IncomingInstanceMappingServiceTest {
+
+    @Mock
+    private FileClient fileClient;
+
+    @InjectMocks
+    private IncomingInstanceMappingService incomingInstanceMappingService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    void shouldReturnInstanceObjectWhenIncomingInstanceIsValid() {
+        UUID uuid = UUID.randomUUID();
+        when(fileClient.postFile(any(File.class))).thenReturn(Mono.just(uuid));
+
+        InstanceObject result = incomingInstanceMappingService.map(4L, createValidIncomingInstance()).block();
+
+        Map<String, String> valuePerKey = result.getValuePerKey();
+        assertEquals("Ola", valuePerKey.get("personaliaFornavn"));
+        assertEquals("Nordmann", valuePerKey.get("personaliaMellomnavn"));
+        assertEquals("Nordmannsen", valuePerKey.get("personaliaEtternavn"));
+        assertEquals("12345678901", valuePerKey.get("personaliaFodselsnummer"));
+
+        assertEquals("12345678", valuePerKey.get("kontaktinformasjonTelefonnummer"));
+        assertEquals("ola@normann.no", valuePerKey.get("kontaktinformasjonEpostadresse"));
+
+        assertEquals("Osloveien 1", valuePerKey.get("inntaksadresseGateadresse"));
+        assertEquals("1234", valuePerKey.get("inntaksadressePostnummer"));
+        assertEquals("Oslo", valuePerKey.get("inntaksadressePoststed"));
+
+        assertEquals("Dokumenttittel", valuePerKey.get("dokumentTittel"));
+        assertEquals("2021-01-01", valuePerKey.get("dokumentDato"));
+        assertEquals("dokument.pdf", valuePerKey.get("dokumentFilnavn"));
+        assertEquals("text/plain", valuePerKey.get("dokumentFormat"));
+        assertEquals(uuid.toString(), valuePerKey.get("dokumentFil"));
+    }
+
+    @Test
+    void shouldNotReturnInstansId(){
+        when(fileClient.postFile(any(File.class))).thenReturn(Mono.just(UUID.randomUUID()));
+
+        InstanceObject result = incomingInstanceMappingService.map(4L, createValidIncomingInstance()).block();
+
+        assertFalse(result.getValuePerKey().containsKey("instansId"));
+    }
+
+    private IncomingInstance createValidIncomingInstance() {
+        return IncomingInstance.builder()
+                .instansId("12345")
+                .personalia(Personalia.builder()
+                        .fodselsnummer("12345678901")
+                        .fornavn("Ola")
+                        .mellomnavn("Nordmann")
+                        .etternavn("Nordmannsen")
+                        .build())
+
+                .kontaktinformasjon(Kontaktinformasjon.builder()
+                        .telefonnummer("12345678")
+                        .epostadresse("ola@normann.no")
+                        .build())
+
+                .inntaksadresse(Inntaksadresse.builder()
+                        .gateadresse("Osloveien 1")
+                        .postnummer("1234")
+                        .poststed("Oslo")
+                        .build())
+
+                .dokument(Dokument.builder()
+                        .tittel("Dokumenttittel")
+                        .dato("2021-01-01")
+                        .filnavn("dokument.pdf")
+                        .format("text/plain")
+                        .build())
+                .build();
+    }
+}
