@@ -9,5 +9,6 @@ import lombok.Getter;
 @Builder
 public class Status {
     private final String instansId;
-    private final String arkivreferanse;
+    private final String destinasjonsId;
+    private final String status;
 }
