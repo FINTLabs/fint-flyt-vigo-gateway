@@ -56,24 +56,21 @@ public class InstanceController {
                     log.debug("Get status for instance: {} in sourceApplication: {}", instanceId, applicationId);
 
                     return archiveCaseIdRequestService.getArchiveCaseId(applicationId, instanceId)
-                            .map(caseId -> ResponseEntity.ok(toStatus(instanceId, caseId)))
-                            .orElse(getUkjentStatus());
+                            .map(caseId -> ResponseEntity.ok(Status.builder()
+                                    .instansId(instanceId)
+                                    .destinasjonsId(caseId)
+                                    .status("Instans godtatt av destinasjon").build()
+                                    )
+                            )
+                            .orElse(ResponseEntity
+                                    .badRequest()
+                                    .body(Status.builder()
+                                        .instansId(instanceId)
+                                        .status("Ukjent status").build()
+                                    )
+                            );
                 }
         );
-    }
-
-    private static ResponseEntity<Status> getUkjentStatus() {
-        return ResponseEntity.status(400).body(
-                Status.builder().status("Ukjent status").build()
-        );
-    }
-
-    private static Status toStatus(String instanceId, String destinasjonsId) {
-        return Status.builder()
-                .instansId(instanceId)
-                .destinasjonsId(destinasjonsId)
-                .status("Instans godtatt av destinasjon")
-                .build();
     }
 
 }
