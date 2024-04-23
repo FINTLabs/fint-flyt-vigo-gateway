@@ -3,6 +3,7 @@ package no.fintlabs.instance.gateway;
 import lombok.extern.slf4j.Slf4j;
 import no.fintlabs.gateway.instance.InstanceProcessor;
 import no.fintlabs.gateway.instance.kafka.ArchiveCaseIdRequestService;
+import no.fintlabs.instance.gateway.model.Status;
 import no.fintlabs.instance.gateway.model.vigo.IncomingInstance;
 import no.fintlabs.resourceserver.security.client.sourceapplication.SourceApplicationAuthorizationUtil;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +44,8 @@ public class InstanceController {
         );
     }
 
-    @GetMapping("{instanceId}/status")
-    public Mono<ResponseEntity<String>> getStatus(
+    @GetMapping("status/{instanceId}")
+    public Mono<ResponseEntity<Status>> getInstanceStatus(
             @AuthenticationPrincipal Mono<Authentication> authenticationMono,
             @PathVariable String instanceId
     ) {
@@ -55,10 +56,17 @@ public class InstanceController {
                     log.debug("Get status for instance: {} in sourceApplication: {}", instanceId, applicationId);
 
                     return archiveCaseIdRequestService.getArchiveCaseId(applicationId, instanceId)
-                            .map(ResponseEntity::ok)
+                            .map(caseId -> ResponseEntity.ok(toStatus(instanceId, caseId)))
                             .orElse(ResponseEntity.notFound().build());
                 }
         );
+    }
+
+    private static Status toStatus(String instanceId, String caseId) {
+        return Status.builder()
+                .instansId(instanceId)
+                .saksreferanse(caseId)
+                .build();
     }
 
 }
