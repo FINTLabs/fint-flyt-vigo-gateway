@@ -10,12 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -59,14 +55,14 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
         entries.add(Map.entry("dokumentFormat", incomingInstance.getDokument().getFormat()));
         entries.add(Map.entry("dokumentFil", uuid.toString()));
 
-        if (incomingInstance.getTilleggsinformasjon() != null) {
-            entries.add(Map.entry("tilleggsinformasjonSkolear", incomingInstance.getTilleggsinformasjon().getSkolear()));
-            entries.add(Map.entry("tilleggsinformasjonSkolenummer", incomingInstance.getTilleggsinformasjon().getSkolenummer()));
-            entries.add(Map.entry("tilleggsinformasjonSkolenavn", incomingInstance.getTilleggsinformasjon().getSkolenavn()));
-            entries.add(Map.entry("tilleggsinformasjonProgramomradekode", incomingInstance.getTilleggsinformasjon().getProgramomradekode()));
-            entries.add(Map.entry("tilleggsinformasjonProgramomradenavn", incomingInstance.getTilleggsinformasjon().getProgramomradenavn()));
-            entries.add(Map.entry("tilleggsinformasjonSokertype", incomingInstance.getTilleggsinformasjon().getSokertype()));
-        }
+        Optional.ofNullable(incomingInstance.getTilleggsinformasjon()).ifPresent(tilleggsinformasjon -> entries.addAll(Arrays.asList(
+                    Map.entry("tilleggsinformasjonSkolear", tilleggsinformasjon.getSkolear()),
+                    Map.entry("tilleggsinformasjonSkolenummer", tilleggsinformasjon.getSkolenummer()),
+                    Map.entry("tilleggsinformasjonSkolenavn", tilleggsinformasjon.getSkolenavn()),
+                    Map.entry("tilleggsinformasjonProgramomradekode", tilleggsinformasjon.getProgramomradekode()),
+                    Map.entry("tilleggsinformasjonProgramomradenavn", tilleggsinformasjon.getProgramomradenavn()),
+                    Map.entry("tilleggsinformasjonSokertype", tilleggsinformasjon.getSokertype())))
+        );
 
         return entries.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }

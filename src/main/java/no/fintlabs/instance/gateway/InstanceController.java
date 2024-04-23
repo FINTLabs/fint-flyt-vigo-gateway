@@ -2,14 +2,14 @@ package no.fintlabs.instance.gateway;
 
 import lombok.extern.slf4j.Slf4j;
 import no.fintlabs.gateway.instance.InstanceProcessor;
+import no.fintlabs.gateway.instance.kafka.ArchiveCaseIdRequestService;
+import no.fintlabs.instance.gateway.model.Status;
 import no.fintlabs.instance.gateway.model.vigo.IncomingInstance;
+import no.fintlabs.resourceserver.security.client.sourceapplication.SourceApplicationAuthorizationUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import static no.fintlabs.resourceserver.UrlPaths.EXTERNAL_API;
@@ -21,8 +21,12 @@ public class InstanceController {
 
     private final InstanceProcessor<IncomingInstance> instanceProcessor;
 
-    public InstanceController(InstanceProcessor<IncomingInstance> instanceProcessor) {
+    private final ArchiveCaseIdRequestService archiveCaseIdRequestService;
+
+    public InstanceController(InstanceProcessor<IncomingInstance> instanceProcessor,
+                              ArchiveCaseIdRequestService archiveCaseIdRequestService) {
         this.instanceProcessor = instanceProcessor;
+        this.archiveCaseIdRequestService = archiveCaseIdRequestService;
     }
 
     @PostMapping("instance")
@@ -37,6 +41,35 @@ public class InstanceController {
                         authentication,
                         incomingInstance
                 )
+        );
+    }
+
+    @GetMapping("status/{instanceId}")
+    public Mono<ResponseEntity<Status>> getInstanceStatus(
+            @AuthenticationPrincipal Mono<Authentication> authenticationMono,
+            @PathVariable String instanceId
+    ) {
+        return authenticationMono.map(authentication ->
+                {
+                    Long applicationId = SourceApplicationAuthorizationUtil.getSourceApplicationId(authentication);
+
+                    log.debug("Get status for instance: {} in sourceApplication: {}", instanceId, applicationId);
+
+                    return archiveCaseIdRequestService.getArchiveCaseId(applicationId, instanceId)
+                            .map(caseId -> ResponseEntity.ok(Status.builder()
+                                    .instansId(instanceId)
+                                    .destinasjonsId(caseId)
+                                    .status("Instans godtatt av destinasjon").build()
+                                    )
+                            )
+                            .orElse(ResponseEntity
+                                    .badRequest()
+                                    .body(Status.builder()
+                                        .instansId(instanceId)
+                                        .status("Ukjent status").build()
+                                    )
+                            );
+                }
         );
     }
 
