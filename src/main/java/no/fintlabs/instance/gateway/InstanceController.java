@@ -2,14 +2,13 @@ package no.fintlabs.instance.gateway;
 
 import lombok.extern.slf4j.Slf4j;
 import no.fintlabs.gateway.instance.InstanceProcessor;
+import no.fintlabs.gateway.instance.kafka.ArchiveCaseIdRequestService;
 import no.fintlabs.instance.gateway.model.vigo.IncomingInstance;
+import no.fintlabs.resourceserver.security.client.sourceapplication.SourceApplicationAuthorizationUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import static no.fintlabs.resourceserver.UrlPaths.EXTERNAL_API;
@@ -21,8 +20,12 @@ public class InstanceController {
 
     private final InstanceProcessor<IncomingInstance> instanceProcessor;
 
-    public InstanceController(InstanceProcessor<IncomingInstance> instanceProcessor) {
+    private final ArchiveCaseIdRequestService archiveCaseIdRequestService;
+
+    public InstanceController(InstanceProcessor<IncomingInstance> instanceProcessor,
+                              ArchiveCaseIdRequestService archiveCaseIdRequestService) {
         this.instanceProcessor = instanceProcessor;
+        this.archiveCaseIdRequestService = archiveCaseIdRequestService;
     }
 
     @PostMapping("instance")
@@ -37,6 +40,21 @@ public class InstanceController {
                         authentication,
                         incomingInstance
                 )
+        );
+    }
+
+    @GetMapping("{instanceId}/status")
+    public Mono<ResponseEntity<String>> getStatus(
+            @AuthenticationPrincipal Mono<Authentication> authenticationMono,
+            @PathVariable String instanceId
+    ) {
+        return authenticationMono.map(authentication ->
+                archiveCaseIdRequestService.getArchiveCaseId(
+                                SourceApplicationAuthorizationUtil.getSourceApplicationId(authentication),
+                                instanceId
+                        )
+                        .map(ResponseEntity::ok)
+                        .orElse(ResponseEntity.notFound().build())
         );
     }
 
