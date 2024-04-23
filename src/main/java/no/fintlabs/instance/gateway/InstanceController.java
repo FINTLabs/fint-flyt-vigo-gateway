@@ -65,7 +65,7 @@ public class InstanceController {
     private static Status toStatus(String instanceId, String caseId) {
         return Status.builder()
                 .instansId(instanceId)
-                .saksreferanse(caseId)
+                .arkivreferanse(caseId)
                 .build();
     }
 
