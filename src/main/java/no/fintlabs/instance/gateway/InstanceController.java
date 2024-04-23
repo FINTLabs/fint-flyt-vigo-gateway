@@ -49,12 +49,15 @@ public class InstanceController {
             @PathVariable String instanceId
     ) {
         return authenticationMono.map(authentication ->
-                archiveCaseIdRequestService.getArchiveCaseId(
-                                SourceApplicationAuthorizationUtil.getSourceApplicationId(authentication),
-                                instanceId
-                        )
-                        .map(ResponseEntity::ok)
-                        .orElse(ResponseEntity.notFound().build())
+                {
+                    Long applicationId = SourceApplicationAuthorizationUtil.getSourceApplicationId(authentication);
+
+                    log.debug("Get status for instance: {} in sourceApplication: {}", instanceId, applicationId);
+
+                    return archiveCaseIdRequestService.getArchiveCaseId(applicationId, instanceId)
+                            .map(ResponseEntity::ok)
+                            .orElse(ResponseEntity.notFound().build());
+                }
         );
     }
 
