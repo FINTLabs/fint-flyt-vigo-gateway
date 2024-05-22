@@ -47,7 +47,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        org: [ fintlabs-no, ofk-no ]
+        org: [ fintlabs-no, ofk-no, tromsfylke-no ]
         cluster: [ aks-beta-fint-2021-11-23 ]
         include:
           - org: fintlabs-no
