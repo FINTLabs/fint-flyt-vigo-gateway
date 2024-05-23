@@ -14,8 +14,7 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -94,6 +93,58 @@ class IncomingInstanceMappingServiceTest {
     }
 
     @Test
+    void shouldReturnInstanceObjectWhenIncomingInstanceDoesHaveSomeTilleggsinformasjon() {
+        UUID uuid = UUID.randomUUID();
+        when(fileClient.postFile(any(File.class))).thenReturn(Mono.just(uuid));
+
+        InstanceObject result = incomingInstanceMappingService.map(4L, createValidIncomingInstanceWithSomeTilleggsinformasjon()).block();
+
+        Map<String, String> valuePerKey = result.getValuePerKey();
+        assertEquals("Ola", valuePerKey.get("personaliaFornavn"));
+        assertEquals("Nordmann", valuePerKey.get("personaliaMellomnavn"));
+        assertEquals("Nordmannsen", valuePerKey.get("personaliaEtternavn"));
+        assertEquals("12345678901", valuePerKey.get("personaliaFodselsnummer"));
+
+        assertEquals("12345678", valuePerKey.get("kontaktinformasjonTelefonnummer"));
+        assertEquals("ola@normann.no", valuePerKey.get("kontaktinformasjonEpostadresse"));
+
+        assertEquals("Osloveien 1", valuePerKey.get("inntaksadresseGateadresse"));
+        assertEquals("1234", valuePerKey.get("inntaksadressePostnummer"));
+        assertEquals("Oslo", valuePerKey.get("inntaksadressePoststed"));
+
+        assertEquals("2024/2025", valuePerKey.get("tilleggsinformasjonSkolear"));
+        assertEquals("Oslo katedralskole", valuePerKey.get("tilleggsinformasjonSkolenavn"));
+        assertNull(valuePerKey.get("tilleggsinformasjonSkolenummer"));
+    }
+
+    @Test
+    void shouldReturnInstanceObjectWhenIncomingInstanceDoesNotHaveDocument() {
+        UUID uuid = UUID.randomUUID();
+        when(fileClient.postFile(any(File.class))).thenReturn(Mono.just(uuid));
+
+        InstanceObject result = incomingInstanceMappingService.map(4L, createIncomingInstanceWithoutDocument()).block();
+
+        Map<String, String> valuePerKey = result.getValuePerKey();
+        assertEquals("Ola", valuePerKey.get("personaliaFornavn"));
+        assertEquals("Nordmann", valuePerKey.get("personaliaMellomnavn"));
+        assertEquals("Nordmannsen", valuePerKey.get("personaliaEtternavn"));
+        assertEquals("12345678901", valuePerKey.get("personaliaFodselsnummer"));
+
+        assertEquals("12345678", valuePerKey.get("kontaktinformasjonTelefonnummer"));
+        assertEquals("ola@normann.no", valuePerKey.get("kontaktinformasjonEpostadresse"));
+
+        assertEquals("Osloveien 1", valuePerKey.get("inntaksadresseGateadresse"));
+        assertEquals("1234", valuePerKey.get("inntaksadressePostnummer"));
+        assertEquals("Oslo", valuePerKey.get("inntaksadressePoststed"));
+
+        assertNull(valuePerKey.get("dokumentTittel"));
+        assertNull(valuePerKey.get("dokumentDato"));
+        assertNull(valuePerKey.get("dokumentFilnavn"));
+        assertNull(valuePerKey.get("dokumentFormat"));
+        assertNull(valuePerKey.get("dokumentFil"));
+    }
+
+    @Test
     void shouldNotReturnInstansId(){
         when(fileClient.postFile(any(File.class))).thenReturn(Mono.just(UUID.randomUUID()));
 
@@ -141,6 +192,41 @@ class IncomingInstanceMappingServiceTest {
                 .build();
     }
 
+    private IncomingInstance createValidIncomingInstanceWithSomeTilleggsinformasjon() {
+        return IncomingInstance.builder()
+                .instansId("12345")
+                .personalia(Personalia.builder()
+                        .fodselsnummer("12345678901")
+                        .fornavn("Ola")
+                        .mellomnavn("Nordmann")
+                        .etternavn("Nordmannsen")
+                        .build())
+
+                .kontaktinformasjon(Kontaktinformasjon.builder()
+                        .telefonnummer("12345678")
+                        .epostadresse("ola@normann.no")
+                        .build())
+
+                .inntaksadresse(Inntaksadresse.builder()
+                        .gateadresse("Osloveien 1")
+                        .postnummer("1234")
+                        .poststed("Oslo")
+                        .build())
+
+                .dokument(Dokument.builder()
+                        .tittel("Dokumenttittel")
+                        .dato("2021-01-01")
+                        .filnavn("dokument.pdf")
+                        .format("text/plain")
+                        .build())
+
+                .tilleggsinformasjon(Tilleggsinformasjon.builder()
+                        .skolear("2024/2025")
+                        .skolenavn("Oslo katedralskole")
+                        .build())
+                .build();
+    }
+
     private IncomingInstance createIncomingInstanceWithoutTilleggsinformasjon() {
         return IncomingInstance.builder()
                 .instansId("12345")
@@ -167,6 +253,30 @@ class IncomingInstanceMappingServiceTest {
                         .dato("2021-01-01")
                         .filnavn("dokument.pdf")
                         .format("text/plain")
+                        .build())
+
+                .build();
+    }
+
+    private IncomingInstance createIncomingInstanceWithoutDocument() {
+        return IncomingInstance.builder()
+                .instansId("12345")
+                .personalia(Personalia.builder()
+                        .fodselsnummer("12345678901")
+                        .fornavn("Ola")
+                        .mellomnavn("Nordmann")
+                        .etternavn("Nordmannsen")
+                        .build())
+
+                .kontaktinformasjon(Kontaktinformasjon.builder()
+                        .telefonnummer("12345678")
+                        .epostadresse("ola@normann.no")
+                        .build())
+
+                .inntaksadresse(Inntaksadresse.builder()
+                        .gateadresse("Osloveien 1")
+                        .postnummer("1234")
+                        .poststed("Oslo")
                         .build())
 
                 .build();
