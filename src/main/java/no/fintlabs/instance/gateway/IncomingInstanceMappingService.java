@@ -5,6 +5,7 @@ import no.fintlabs.gateway.instance.InstanceMapper;
 import no.fintlabs.gateway.instance.model.File;
 import no.fintlabs.gateway.instance.model.instance.InstanceObject;
 import no.fintlabs.gateway.instance.web.FileClient;
+import no.fintlabs.instance.gateway.model.vigo.Dokument;
 import no.fintlabs.instance.gateway.model.vigo.IncomingInstance;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -28,18 +29,23 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
     @Override
     public Mono<InstanceObject> map(Long sourceApplicationId, IncomingInstance incomingInstance) {
         if (incomingInstance.getDokument() == null) {
+            IncomingInstance fiktivInstance = IncomingInstance.builder()
+                    .instansId(incomingInstance.getInstansId())
+                    .inntaksadresse(incomingInstance.getInntaksadresse())
+                    .kontaktinformasjon(incomingInstance.getKontaktinformasjon())
+                    .personalia(incomingInstance.getPersonalia())
+                    .dokument(Dokument.builder()
+                            .tittel("Fiktivt dokument")
+                            .dato("1970-01-01")
+                            .filnavn("fiktiv.pdf")
+                            .format("application/pdf")
+                            .fil("RXQgdmFubGlnIHZlZGxlZ2cK")
+                            .build())
+                    .build();
             return postFile(sourceApplicationId, incomingInstance)
-                    .map(uuid -> {
-                        Map<String, String> valuePerKey = toValuePerKey(incomingInstance, uuid);
-                        valuePerKey.put("dokumentTittel", "Fiktivt dokument");
-                        valuePerKey.put("dokumentDato", "1970-01-01");
-                        valuePerKey.put("dokumentFilnavn", "fiktiv.pdf");
-                        valuePerKey.put("dokumentFormat", "application/pdf");
-                        valuePerKey.put("dokumentFil", "RXQgdmFubGlnIHZlZGxlZ2cK");
-                        return InstanceObject.builder()
-                            .valuePerKey(valuePerKey)
-                            .build();
-                    });
+                    .map(uuid -> InstanceObject.builder()
+                        .valuePerKey(toValuePerKey(fiktivInstance, uuid))
+                        .build());
         }else {
             return postFile(sourceApplicationId, incomingInstance)
                     .map(uuid -> InstanceObject.builder()
