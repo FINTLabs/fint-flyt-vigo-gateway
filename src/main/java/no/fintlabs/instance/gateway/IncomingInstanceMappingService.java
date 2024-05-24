@@ -31,9 +31,10 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
         if (incomingInstance.getDokument() == null) {
             IncomingInstance fiktivInstance = IncomingInstance.builder()
                     .instansId(incomingInstance.getInstansId())
-                    .inntaksadresse(incomingInstance.getInntaksadresse())
-                    .kontaktinformasjon(incomingInstance.getKontaktinformasjon())
+                    .dokumenttype(incomingInstance.getDokumenttype())
                     .personalia(incomingInstance.getPersonalia())
+                    .kontaktinformasjon(incomingInstance.getKontaktinformasjon())
+                    .inntaksadresse(incomingInstance.getInntaksadresse())
                     .dokument(Dokument.builder()
                             .tittel("Fiktivt dokument")
                             .dato("1970-01-01")
@@ -41,6 +42,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                             .format("application/pdf")
                             .fil("RXQgdmFubGlnIHZlZGxlZ2cK")
                             .build())
+                    .tilleggsinformasjon(incomingInstance.getTilleggsinformasjon())
                     .build();
             return postFile(sourceApplicationId, fiktivInstance)
                     .map(uuid -> InstanceObject.builder()
