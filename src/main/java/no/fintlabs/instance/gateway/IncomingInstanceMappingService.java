@@ -28,17 +28,25 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
     @Override
     public Mono<InstanceObject> map(Long sourceApplicationId, IncomingInstance incomingInstance) {
         if (incomingInstance.getDokument() == null) {
-            Map<String, String> valuePerKey = toValuePerKey(incomingInstance, null);
-            valuePerKey.put("dokumentTittel", "Fiktivt dokument");
-            valuePerKey.put("dokumentDato", "1970-01-01");
-            valuePerKey.put("dokumentFilnavn", "fiktiv.pdf");
-            valuePerKey.put("dokumentFormat", "application/pdf");
-            valuePerKey.put("dokumentFil", "RXQgdmFubGlnIHZlZGxlZ2cK");
+            return postFile(sourceApplicationId, incomingInstance)
+                    .map(uuid -> {
+                        Map<String, String> valuePerKey = toValuePerKey(incomingInstance, uuid);
+                        valuePerKey.put("dokumentTittel", "Fiktivt dokument");
+                        valuePerKey.put("dokumentDato", "1970-01-01");
+                        valuePerKey.put("dokumentFilnavn", "fiktiv.pdf");
+                        valuePerKey.put("dokumentFormat", "application/pdf");
+                        valuePerKey.put("dokumentFil", "RXQgdmFubGlnIHZlZGxlZ2cK");
+                        return InstanceObject.builder()
+                            .valuePerKey(valuePerKey)
+                            .build();
+                    });
+        }else {
+            return postFile(sourceApplicationId, incomingInstance)
+                    .map(uuid -> InstanceObject.builder()
+                            .valuePerKey(toValuePerKey(incomingInstance, uuid))
+                            .build());
         }
-        return postFile(sourceApplicationId, incomingInstance)
-                .map(uuid -> InstanceObject.builder()
-                        .valuePerKey(toValuePerKey(incomingInstance, uuid))
-                        .build());
+
     }
 
     private static Map<String, String> toValuePerKey(IncomingInstance incomingInstance, UUID uuid) {
