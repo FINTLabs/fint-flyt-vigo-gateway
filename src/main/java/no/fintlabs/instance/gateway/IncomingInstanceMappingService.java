@@ -42,7 +42,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                             .fil("RXQgdmFubGlnIHZlZGxlZ2cK")
                             .build())
                     .build();
-            return postFile(sourceApplicationId, incomingInstance)
+            return postFile(sourceApplicationId, fiktivInstance)
                     .map(uuid -> InstanceObject.builder()
                         .valuePerKey(toValuePerKey(fiktivInstance, uuid))
                         .build());
