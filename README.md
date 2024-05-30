@@ -13,4 +13,4 @@ https://github.com/FINTLabs/fint-flyt-instance-gateway-template (or call a frien
 
 1. Install Bruno: `brew install --cask bruno`
 2. Open folder `bruno` in Bruno
-3. Get `user_session` cookie from https://flyt.vigoiks.no
+3. Get `user_session` cookie from https://flyt.vigoiks.no (NB! To make this work, you need to disable 'Send Cookies automatically' in the settings).

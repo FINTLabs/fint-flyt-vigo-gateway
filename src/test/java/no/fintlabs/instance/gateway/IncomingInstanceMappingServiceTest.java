@@ -116,8 +116,7 @@ class IncomingInstanceMappingServiceTest {
         assertEquals("Oslo katedralskole", valuePerKey.get("tilleggsinformasjonSkolenavn"));
         assertNull(valuePerKey.get("tilleggsinformasjonSkolenummer"));
     }
-
-    //@Test - Prøver oss med fiktivt dokument på instanser uten dokument
+    @Test
     void shouldReturnInstanceObjectWhenIncomingInstanceDoesNotHaveDocument() {
         UUID uuid = UUID.randomUUID();
         when(fileClient.postFile(any(File.class))).thenReturn(Mono.just(uuid));

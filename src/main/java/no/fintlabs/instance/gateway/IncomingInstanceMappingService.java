@@ -29,37 +29,19 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
     @Override
     public Mono<InstanceObject> map(Long sourceApplicationId, IncomingInstance incomingInstance) {
         if (incomingInstance.getDokument() == null) {
-            IncomingInstance fiktivInstance = IncomingInstance.builder()
-                    .instansId(incomingInstance.getInstansId())
-                    .dokumenttype(incomingInstance.getDokumenttype())
-                    .personalia(incomingInstance.getPersonalia())
-                    .kontaktinformasjon(incomingInstance.getKontaktinformasjon())
-                    .inntaksadresse(incomingInstance.getInntaksadresse())
-                    .dokument(Dokument.builder()
-                            .tittel("Fiktivt dokument")
-                            .dato("1970-01-01")
-                            .filnavn("fiktiv.pdf")
-                            .format("application/pdf")
-                            .fil("RXQgdmFubGlnIHZlZGxlZ2cK")
-                            .build())
-                    .tilleggsinformasjon(incomingInstance.getTilleggsinformasjon())
-                    .build();
-            return postFile(sourceApplicationId, fiktivInstance)
-                    .map(uuid -> InstanceObject.builder()
-                        .valuePerKey(toValuePerKey(fiktivInstance, uuid))
-                        .build());
-        }else {
+            return Mono.just(InstanceObject.builder()
+                    .valuePerKey(toValuePerKey(incomingInstance, null))
+                    .build());
+        } else {
             return postFile(sourceApplicationId, incomingInstance)
                     .map(uuid -> InstanceObject.builder()
                             .valuePerKey(toValuePerKey(incomingInstance, uuid))
                             .build());
         }
-
     }
 
     private static Map<String, String> toValuePerKey(IncomingInstance incomingInstance, UUID uuid) {
         Set<Map.Entry<String, String>> entries = new HashSet<>();
-
 
         entries.add(Map.entry("personaliaFodselsnummer", incomingInstance.getPersonalia().getFodselsnummer()));
         entries.add(Map.entry("personaliaFornavn", incomingInstance.getPersonalia().getFornavn()));
