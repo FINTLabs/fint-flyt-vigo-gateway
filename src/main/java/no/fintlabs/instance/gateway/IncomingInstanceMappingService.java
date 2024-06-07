@@ -42,6 +42,9 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
         entries.add(Map.entry("personaliaMellomnavn", incomingInstance.getPersonalia().getMellomnavn()));
         entries.add(Map.entry("personaliaEtternavn", incomingInstance.getPersonalia().getEtternavn()));
 
+        Optional.ofNullable(incomingInstance.getPersonalia().getFodselsdato())
+                .ifPresent(fodselsdato -> entries.add(Map.entry("personaliaFodselsdato", fodselsdato)));
+
         entries.add(Map.entry("kontaktinformasjonTelefonnummer", incomingInstance.getKontaktinformasjon().getTelefonnummer()));
         entries.add(Map.entry("kontaktinformasjonEpostadresse", incomingInstance.getKontaktinformasjon().getEpostadresse()));
 
