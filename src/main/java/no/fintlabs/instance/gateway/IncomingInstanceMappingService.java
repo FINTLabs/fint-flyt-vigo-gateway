@@ -49,7 +49,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
 
         entries.add(Map.entry("personaliaEtternavn", incomingInstance.getPersonalia().getEtternavn()));
 
-        entries.add(Map.entry("tilpassetFulltNavn1",
+        entries.add(Map.entry("tilpassetNavn1",
                 Stream.of(incomingInstance.getPersonalia().getFornavn(),
                         incomingInstance.getPersonalia().getMellomnavn(),
                         incomingInstance.getPersonalia().getEtternavn())
@@ -57,7 +57,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                     .collect(Collectors.joining(" "))
         ));
 
-        entries.add(Map.entry("tilpassetFulltNavn2",
+        entries.add(Map.entry("tilpassetNavn2",
                 Stream.of(incomingInstance.getPersonalia().getEtternavn(),
                         incomingInstance.getPersonalia().getFornavn(),
                         incomingInstance.getPersonalia().getMellomnavn())
@@ -65,7 +65,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                     .collect(Collectors.joining(" "))
         ));
 
-        entries.add(Map.entry("tilpassetFulltNavn3",
+        entries.add(Map.entry("tilpassetNavn3",
                 Stream.of(incomingInstance.getPersonalia().getEtternavn() +",",
                                 incomingInstance.getPersonalia().getFornavn(),
                                 incomingInstance.getPersonalia().getMellomnavn())

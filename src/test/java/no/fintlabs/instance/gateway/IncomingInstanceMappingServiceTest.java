@@ -120,9 +120,9 @@ class IncomingInstanceMappingServiceTest {
         InstanceObject result = incomingInstanceMappingService
                 .map(4L, createIncomingInstance().build()).block();
 
-        assertEquals("Ola Nordmann Nordmannsen", result.getValuePerKey().get("tilpassetFulltNavn1"));
-        assertEquals("Nordmannsen Ola Nordmann", result.getValuePerKey().get("tilpassetFulltNavn2"));
-        assertEquals("Nordmannsen, Ola Nordmann", result.getValuePerKey().get("tilpassetFulltNavn3"));
+        assertEquals("Ola Nordmann Nordmannsen", result.getValuePerKey().get("tilpassetNavn1"));
+        assertEquals("Nordmannsen Ola Nordmann", result.getValuePerKey().get("tilpassetNavn2"));
+        assertEquals("Nordmannsen, Ola Nordmann", result.getValuePerKey().get("tilpassetNavn3"));
     }
 
     @Test
@@ -136,9 +136,9 @@ class IncomingInstanceMappingServiceTest {
                                 .fodselsdato("19-12-3100")
                                 .build()).build()).block();
 
-        assertEquals("Ola Nordmannsen", result.getValuePerKey().get("tilpassetFulltNavn1"));
-        assertEquals("Nordmannsen Ola", result.getValuePerKey().get("tilpassetFulltNavn2"));
-        assertEquals("Nordmannsen, Ola", result.getValuePerKey().get("tilpassetFulltNavn3"));
+        assertEquals("Ola Nordmannsen", result.getValuePerKey().get("tilpassetNavn1"));
+        assertEquals("Nordmannsen Ola", result.getValuePerKey().get("tilpassetNavn2"));
+        assertEquals("Nordmannsen, Ola", result.getValuePerKey().get("tilpassetNavn3"));
     }
 
     @Test
