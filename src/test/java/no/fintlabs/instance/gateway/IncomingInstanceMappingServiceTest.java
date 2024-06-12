@@ -106,6 +106,59 @@ class IncomingInstanceMappingServiceTest {
     }
 
     @Test
+    void shouldCreateCustomizedFodselsdato() {
+        InstanceObject result = incomingInstanceMappingService
+                .map(4L, createIncomingInstance().build()).block();
+
+        assertEquals("311280", result.getValuePerKey().get("tilpassetFodselsdato1"));
+        assertEquals("31.12.1980", result.getValuePerKey().get("tilpassetFodselsdato2"));
+
+    }
+
+    @Test
+    void shouldCreateCustomizedFullName() {
+        InstanceObject result = incomingInstanceMappingService
+                .map(4L, createIncomingInstance().build()).block();
+
+        assertEquals("Ola Nordmann Nordmannsen", result.getValuePerKey().get("tilpassetFulltNavn1"));
+        assertEquals("Nordmannsen Ola Nordmann", result.getValuePerKey().get("tilpassetFulltNavn2"));
+        assertEquals("Nordmannsen, Ola Nordmann", result.getValuePerKey().get("tilpassetFulltNavn3"));
+    }
+
+    @Test
+    void shouldCreateCustomizedFullNameWitoutMiddleName() {
+        InstanceObject result = incomingInstanceMappingService
+                .map(4L, createIncomingInstance()
+                        .personalia(Personalia.builder()
+                                .fodselsnummer("12345678901")
+                                .fornavn("Ola")
+                                .etternavn("Nordmannsen")
+                                .fodselsdato("19-12-3100")
+                                .build()).build()).block();
+
+        assertEquals("Ola Nordmannsen", result.getValuePerKey().get("tilpassetFulltNavn1"));
+        assertEquals("Nordmannsen Ola", result.getValuePerKey().get("tilpassetFulltNavn2"));
+        assertEquals("Nordmannsen, Ola", result.getValuePerKey().get("tilpassetFulltNavn3"));
+    }
+
+    @Test
+    void shouldNotAcceptInvalidFodselsdato() {
+        InstanceObject result = incomingInstanceMappingService
+                .map(4L, createIncomingInstance()
+                        .personalia(Personalia.builder()
+                                .fodselsnummer("12345678901")
+                                .fornavn("Ola")
+                                .mellomnavn("Nordmann")
+                                .etternavn("Nordmannsen")
+                                .fodselsdato("19-12-3100")
+                                .build())
+                        .build()).block();
+
+        assertFalse(result.getValuePerKey().containsKey("tilpassetFodselsdato1"));
+        assertFalse(result.getValuePerKey().containsKey("tilpassetFodselsdato2"));
+    }
+
+    @Test
     void shouldNotReturnInstansId(){
         InstanceObject result = incomingInstanceMappingService
                 .map(4L, createIncomingInstance().build()).block();
