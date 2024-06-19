@@ -33,7 +33,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: ${{ github.actor != 'dependabot[bot]' }}
           tags: ${{ steps.meta.outputs.tags }}
@@ -55,6 +55,9 @@ jobs:
 
           - org: tromsfylke-no
             deploy-every-branch: true
+
+          - cluster: aks-api-fint-2022-02-08
+            org: ofk-no
 
     steps:
       - uses: actions/checkout@v4

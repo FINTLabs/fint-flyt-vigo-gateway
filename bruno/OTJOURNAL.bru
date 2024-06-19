@@ -1,0 +1,78 @@
+meta {
+  name: OTJOURNAL
+  type: http
+  seq: 6
+}
+
+post {
+  url: https://flyt.vigoiks.no/{{env}}{{org}}/api/intern/metadata
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "sourceApplicationId": 4,
+      "sourceApplicationIntegrationId": "OTJOURNAL",
+      "sourceApplicationIntegrationUri": null,
+      "integrationDisplayName": "Arkivering fra VIGO OT",
+      "version": 2,
+      "instanceMetadata": {
+        "instanceValueMetadata": [],
+        "instanceObjectCollectionMetadata": [],
+        "categories": [
+          {
+            "displayName": "Personalia",
+            "content": {
+              "instanceValueMetadata": [
+                { "displayName": "Fødselsnummer", "type": "STRING", "key": "personaliaFodselsnummer" },
+                { "displayName": "Fornavn", "type": "STRING", "key": "personaliaFornavn" },
+                { "displayName": "Mellomnavn", "type": "STRING", "key": "personaliaMellomnavn" },
+                { "displayName": "Etternavn", "type": "STRING", "key": "personaliaEtternavn" },
+                { "displayName": "Fødselsdato", "type": "STRING", "key": "personaliaFodselsdato" }
+              ],
+              "instanceObjectCollectionMetadata": [],
+              "categories": []
+            }
+          },
+          {
+            "displayName": "Kontaktinformasjon",
+            "content": {
+              "instanceValueMetadata": [
+                { "displayName": "Telefonnummer", "type": "STRING", "key": "kontaktinformasjonTelefonnummer" },
+                { "displayName": "Epostadresse", "type": "STRING", "key": "kontaktinformasjonEpostadresse" }
+              ],
+              "instanceObjectCollectionMetadata": [],
+              "categories": []
+            }
+          },
+          {
+            "displayName": "Inntaksadresse",
+            "content": {
+              "instanceValueMetadata": [
+                { "displayName": "Gateadresse", "type": "STRING", "key": "inntaksadresseGateadresse" },
+                { "displayName": "Postnummer", "type": "STRING", "key": "inntaksadressePostnummer" },
+                { "displayName": "Poststed", "type": "STRING", "key": "inntaksadressePoststed" }
+              ],
+              "instanceObjectCollectionMetadata": [],
+              "categories": []
+            }
+          },
+          {
+            "displayName": "Dokument",
+            "content": {
+              "instanceValueMetadata": [
+                { "displayName": "Tittel", "type": "STRING", "key": "dokumentTittel" },
+                { "displayName": "Dato", "type": "STRING", "key": "dokumentDato" },
+                { "displayName": "Filnavn", "type": "STRING", "key": "dokumentFilnavn" },
+                { "displayName": "Fil", "type": "FILE", "key": "dokumentFil" },
+                { "displayName": "Format", "type": "STRING", "key": "dokumentFormat" }
+              ],
+              "instanceObjectCollectionMetadata": [],
+              "categories": []
+            }
+          }
+        ]
+      }
+    }
+}

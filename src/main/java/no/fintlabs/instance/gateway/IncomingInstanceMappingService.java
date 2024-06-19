@@ -11,8 +11,12 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -45,8 +49,47 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
 
         entries.add(Map.entry("personaliaFodselsnummer", incomingInstance.getPersonalia().getFodselsnummer()));
         entries.add(Map.entry("personaliaFornavn", incomingInstance.getPersonalia().getFornavn()));
-        entries.add(Map.entry("personaliaMellomnavn", incomingInstance.getPersonalia().getMellomnavn()));
+
+        Optional.ofNullable(incomingInstance.getPersonalia().getMellomnavn())
+                .ifPresent(mellomnavn -> entries.add(Map.entry("personaliaMellomnavn", mellomnavn)));
+
         entries.add(Map.entry("personaliaEtternavn", incomingInstance.getPersonalia().getEtternavn()));
+
+        entries.add(Map.entry("tilpassetNavn1",
+                Stream.of(incomingInstance.getPersonalia().getFornavn(),
+                        incomingInstance.getPersonalia().getMellomnavn(),
+                        incomingInstance.getPersonalia().getEtternavn())
+                    .filter(s -> s != null)
+                    .collect(Collectors.joining(" "))
+        ));
+
+        entries.add(Map.entry("tilpassetNavn2",
+                Stream.of(incomingInstance.getPersonalia().getEtternavn(),
+                        incomingInstance.getPersonalia().getFornavn(),
+                        incomingInstance.getPersonalia().getMellomnavn())
+                    .filter(s -> s != null)
+                    .collect(Collectors.joining(" "))
+        ));
+
+        entries.add(Map.entry("tilpassetNavn3",
+                Stream.of(incomingInstance.getPersonalia().getEtternavn() +",",
+                                incomingInstance.getPersonalia().getFornavn(),
+                                incomingInstance.getPersonalia().getMellomnavn())
+                        .filter(s -> s != null)
+                        .collect(Collectors.joining(" "))
+        ));
+
+        Optional.ofNullable(incomingInstance.getPersonalia().getFodselsdato())
+                .ifPresent(fodselsdato -> {
+                    entries.add(Map.entry("personaliaFodselsdato", fodselsdato));
+
+                    Optional.ofNullable(formatedDate(fodselsdato, "ddMMyy")).ifPresent(formatedFodselsdato ->
+                            entries.add(Map.entry("tilpassetFodselsdato1", formatedFodselsdato)));
+
+                    Optional.ofNullable(formatedDate(fodselsdato, "dd.MM.yyyy")).ifPresent(formatedFodselsdato ->
+                            entries.add(Map.entry("tilpassetFodselsdato2", formatedFodselsdato)));
+                   
+                });
 
         entries.add(Map.entry("kontaktinformasjonTelefonnummer", incomingInstance.getKontaktinformasjon().getTelefonnummer()));
         entries.add(Map.entry("kontaktinformasjonEpostadresse", incomingInstance.getKontaktinformasjon().getEpostadresse()));
@@ -87,6 +130,17 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
 
         return entries.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
+
+    private static String formatedDate(String fodselsdato, String format) {
+        try {
+            LocalDate date = LocalDate.parse(fodselsdato, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            String formattedDate = date.format(DateTimeFormatter.ofPattern(format));
+            return formattedDate;
+        } catch (DateTimeParseException e) {
+            return null;
+        }
+    }
+
 
     private Mono<UUID> postFile(Long sourceApplicationId, IncomingInstance incomingInstance) {
         return fileClient.postFile(
