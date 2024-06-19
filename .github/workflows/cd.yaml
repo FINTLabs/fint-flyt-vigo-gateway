@@ -50,10 +50,7 @@ jobs:
         org: [ fintlabs-no, ofk-no, tromsfylke-no ]
         cluster: [ aks-beta-fint-2021-11-23 ]
         include:
-          - org: fintlabs-no
-            deploy-every-branch: true
-
-          - org: tromsfylke-no
+          - cluster: aks-beta-fint-2021-11-23
             deploy-every-branch: true
 
           - cluster: aks-api-fint-2022-02-08
