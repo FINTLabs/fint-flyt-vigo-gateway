@@ -14,8 +14,8 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -98,6 +98,59 @@ class IncomingInstanceMappingServiceTest {
     }
 
     @Test
+    void shouldReturnInstanceObjectWhenIncomingInstanceDoesHaveSomeTilleggsinformasjon() {
+        UUID uuid = UUID.randomUUID();
+        when(fileClient.postFile(any(File.class))).thenReturn(Mono.just(uuid));
+
+        InstanceObject result = incomingInstanceMappingService.map(4L, createValidIncomingInstanceWithSomeTilleggsinformasjon()).block();
+
+        Map<String, String> valuePerKey = result.getValuePerKey();
+        assertEquals("Ola", valuePerKey.get("personaliaFornavn"));
+        assertEquals("Nordmann", valuePerKey.get("personaliaMellomnavn"));
+        assertEquals("Nordmannsen", valuePerKey.get("personaliaEtternavn"));
+        assertEquals("12345678901", valuePerKey.get("personaliaFodselsnummer"));
+
+        assertEquals("12345678", valuePerKey.get("kontaktinformasjonTelefonnummer"));
+        assertEquals("ola@normann.no", valuePerKey.get("kontaktinformasjonEpostadresse"));
+
+        assertEquals("Osloveien 1", valuePerKey.get("inntaksadresseGateadresse"));
+        assertEquals("1234", valuePerKey.get("inntaksadressePostnummer"));
+        assertEquals("Oslo", valuePerKey.get("inntaksadressePoststed"));
+
+        assertEquals("2024/2025", valuePerKey.get("tilleggsinformasjonSkolear"));
+        assertEquals("Oslo katedralskole", valuePerKey.get("tilleggsinformasjonSkolenavn"));
+        assertNull(valuePerKey.get("tilleggsinformasjonSkolenummer"));
+    }
+
+    @Test
+    void shouldReturnInstanceObjectWhenIncomingInstanceDoesNotHaveDocument() {
+        UUID uuid = UUID.randomUUID();
+        when(fileClient.postFile(any(File.class))).thenReturn(Mono.just(uuid));
+
+        InstanceObject result = incomingInstanceMappingService
+                .map(4L, createIncomingInstanceWithoutDocument().build()).block();
+
+        Map<String, String> valuePerKey = result.getValuePerKey();
+        assertEquals("Ola", valuePerKey.get("personaliaFornavn"));
+        assertEquals("Nordmann", valuePerKey.get("personaliaMellomnavn"));
+        assertEquals("Nordmannsen", valuePerKey.get("personaliaEtternavn"));
+        assertEquals("12345678901", valuePerKey.get("personaliaFodselsnummer"));
+
+        assertEquals("12345678", valuePerKey.get("kontaktinformasjonTelefonnummer"));
+        assertEquals("ola@normann.no", valuePerKey.get("kontaktinformasjonEpostadresse"));
+
+        assertEquals("Osloveien 1", valuePerKey.get("inntaksadresseGateadresse"));
+        assertEquals("1234", valuePerKey.get("inntaksadressePostnummer"));
+        assertEquals("Oslo", valuePerKey.get("inntaksadressePoststed"));
+
+        assertNull(valuePerKey.get("dokumentTittel"));
+        assertNull(valuePerKey.get("dokumentDato"));
+        assertNull(valuePerKey.get("dokumentFilnavn"));
+        assertNull(valuePerKey.get("dokumentFormat"));
+        assertNull(valuePerKey.get("dokumentFil"));
+    }
+
+    @Test
     void shouldAcceptFodselsdatoAsNull() {
         InstanceObject result = incomingInstanceMappingService
                 .map(4L, createValidIncomingInstanceWithFodselsdatoAsNull().build()).block();
@@ -161,7 +214,7 @@ class IncomingInstanceMappingServiceTest {
     @Test
     void shouldNotReturnInstansId(){
         InstanceObject result = incomingInstanceMappingService
-                .map(4L, createIncomingInstance().build()).block();
+                .map(4L, createValidIncomingInstanceWithTilleggsinformasjon().build()).block();
 
         assertFalse(result.getValuePerKey().containsKey("instansId"));
     }
@@ -209,6 +262,41 @@ class IncomingInstanceMappingServiceTest {
                         .build());
     }
 
+    private IncomingInstance createValidIncomingInstanceWithSomeTilleggsinformasjon() {
+        return IncomingInstance.builder()
+                .instansId("12345")
+                .personalia(Personalia.builder()
+                        .fodselsnummer("12345678901")
+                        .fornavn("Ola")
+                        .mellomnavn("Nordmann")
+                        .etternavn("Nordmannsen")
+                        .build())
+
+                .kontaktinformasjon(Kontaktinformasjon.builder()
+                        .telefonnummer("12345678")
+                        .epostadresse("ola@normann.no")
+                        .build())
+
+                .inntaksadresse(Inntaksadresse.builder()
+                        .gateadresse("Osloveien 1")
+                        .postnummer("1234")
+                        .poststed("Oslo")
+                        .build())
+
+                .dokument(Dokument.builder()
+                        .tittel("Dokumenttittel")
+                        .dato("2021-01-01")
+                        .filnavn("dokument.pdf")
+                        .format("text/plain")
+                        .build())
+
+                .tilleggsinformasjon(Tilleggsinformasjon.builder()
+                        .skolear("2024/2025")
+                        .skolenavn("Oslo katedralskole")
+                        .build())
+                .build();
+    }
+
     private IncomingInstance.IncomingInstanceBuilder createValidIncomingInstanceWithFodselsdatoAsNull() {
         return createIncomingInstance()
                 .personalia(Personalia.builder()
@@ -217,6 +305,46 @@ class IncomingInstanceMappingServiceTest {
                         .mellomnavn("Nordmann")
                         .etternavn("Nordmannsen")
                         .fodselsdato(null)
+                        .build())
+
+                .kontaktinformasjon(Kontaktinformasjon.builder()
+                        .telefonnummer("12345678")
+                        .epostadresse("ola@normann.no")
+                        .build())
+
+                .inntaksadresse(Inntaksadresse.builder()
+                        .gateadresse("Osloveien 1")
+                        .postnummer("1234")
+                        .poststed("Oslo")
+                        .build())
+
+                .dokument(Dokument.builder()
+                        .tittel("Dokumenttittel")
+                        .dato("2021-01-01")
+                        .filnavn("dokument.pdf")
+                        .format("text/plain")
+                        .build());
+    }
+
+    private IncomingInstance.IncomingInstanceBuilder createIncomingInstanceWithoutDocument() {
+        return IncomingInstance.builder()
+                .instansId("12345")
+                .personalia(Personalia.builder()
+                        .fodselsnummer("12345678901")
+                        .fornavn("Ola")
+                        .mellomnavn("Nordmann")
+                        .etternavn("Nordmannsen")
+                        .build())
+
+                .kontaktinformasjon(Kontaktinformasjon.builder()
+                        .telefonnummer("12345678")
+                        .epostadresse("ola@normann.no")
+                        .build())
+
+                .inntaksadresse(Inntaksadresse.builder()
+                        .gateadresse("Osloveien 1")
+                        .postnummer("1234")
+                        .poststed("Oslo")
                         .build());
     }
 }

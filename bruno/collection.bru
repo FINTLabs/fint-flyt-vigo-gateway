@@ -1,0 +1,14 @@
+script:pre-request {
+
+  // To make this work, you need to disable 'Send Cookies automatically' in the settings.
+  
+  var cookie = [
+    `user_session=${bru.getEnvVar("user_session")}`,
+    `Expires=Tue, 19 Jan 2038 03:14:07 GMT`,
+    `Domain=flyt.vigoiks.no`,
+    `Path=/${bru.getEnvVar("env")}${bru.getEnvVar("org")}`
+  ].join("; ")
+  
+  req.setHeader("Cookie", cookie)
+
+}

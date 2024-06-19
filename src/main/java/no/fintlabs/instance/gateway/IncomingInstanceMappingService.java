@@ -5,6 +5,7 @@ import no.fintlabs.gateway.instance.InstanceMapper;
 import no.fintlabs.gateway.instance.model.File;
 import no.fintlabs.gateway.instance.model.instance.InstanceObject;
 import no.fintlabs.gateway.instance.web.FileClient;
+import no.fintlabs.instance.gateway.model.vigo.Dokument;
 import no.fintlabs.instance.gateway.model.vigo.IncomingInstance;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -31,15 +32,20 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
 
     @Override
     public Mono<InstanceObject> map(Long sourceApplicationId, IncomingInstance incomingInstance) {
-        return postFile(sourceApplicationId, incomingInstance)
-                .map(uuid -> InstanceObject.builder()
-                        .valuePerKey(toValuePerKey(incomingInstance, uuid))
-                        .build());
+        if (incomingInstance.getDokument() == null) {
+            return Mono.just(InstanceObject.builder()
+                    .valuePerKey(toValuePerKey(incomingInstance, null))
+                    .build());
+        } else {
+            return postFile(sourceApplicationId, incomingInstance)
+                    .map(uuid -> InstanceObject.builder()
+                            .valuePerKey(toValuePerKey(incomingInstance, uuid))
+                            .build());
+        }
     }
 
     private static Map<String, String> toValuePerKey(IncomingInstance incomingInstance, UUID uuid) {
         Set<Map.Entry<String, String>> entries = new HashSet<>();
-
 
         entries.add(Map.entry("personaliaFodselsnummer", incomingInstance.getPersonalia().getFodselsnummer()));
         entries.add(Map.entry("personaliaFornavn", incomingInstance.getPersonalia().getFornavn()));
@@ -92,20 +98,35 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
         entries.add(Map.entry("inntaksadressePostnummer", incomingInstance.getInntaksadresse().getPostnummer()));
         entries.add(Map.entry("inntaksadressePoststed", incomingInstance.getInntaksadresse().getPoststed()));
 
-        entries.add(Map.entry("dokumentTittel", incomingInstance.getDokument().getTittel()));
-        entries.add(Map.entry("dokumentDato", incomingInstance.getDokument().getDato()));
-        entries.add(Map.entry("dokumentFilnavn", incomingInstance.getDokument().getFilnavn()));
-        entries.add(Map.entry("dokumentFormat", incomingInstance.getDokument().getFormat()));
-        entries.add(Map.entry("dokumentFil", uuid.toString()));
+        Optional.ofNullable(incomingInstance.getDokument()).ifPresent(dokument -> {
+            entries.add(Map.entry("dokumentTittel", dokument.getTittel()));
+            entries.add(Map.entry("dokumentDato", dokument.getDato()));
+            entries.add(Map.entry("dokumentFilnavn", dokument.getFilnavn()));
+            entries.add(Map.entry("dokumentFormat", dokument.getFormat()));
+            entries.add(Map.entry("dokumentFil", uuid.toString()));
+        });
 
-        Optional.ofNullable(incomingInstance.getTilleggsinformasjon()).ifPresent(tilleggsinformasjon -> entries.addAll(Arrays.asList(
-                    Map.entry("tilleggsinformasjonSkolear", tilleggsinformasjon.getSkolear()),
-                    Map.entry("tilleggsinformasjonSkolenummer", tilleggsinformasjon.getSkolenummer()),
-                    Map.entry("tilleggsinformasjonSkolenavn", tilleggsinformasjon.getSkolenavn()),
-                    Map.entry("tilleggsinformasjonProgramomradekode", tilleggsinformasjon.getProgramomradekode()),
-                    Map.entry("tilleggsinformasjonProgramomradenavn", tilleggsinformasjon.getProgramomradenavn()),
-                    Map.entry("tilleggsinformasjonSokertype", tilleggsinformasjon.getSokertype())))
-        );
+        Optional.ofNullable(incomingInstance.getTilleggsinformasjon()).ifPresent(tilleggsinformasjon -> {
+
+            Optional.ofNullable(tilleggsinformasjon.getSkolear())
+                    .ifPresent(skolear -> entries.add(Map.entry("tilleggsinformasjonSkolear", skolear)));
+
+            Optional.ofNullable(tilleggsinformasjon.getSkolenummer())
+                    .ifPresent(skolenummer -> entries.add(Map.entry("tilleggsinformasjonSkolenummer", skolenummer)));
+
+            Optional.ofNullable(tilleggsinformasjon.getSkolenavn())
+                    .ifPresent(skolenavn -> entries.add(Map.entry("tilleggsinformasjonSkolenavn", skolenavn)));
+
+            Optional.ofNullable(tilleggsinformasjon.getProgramomradekode())
+                    .ifPresent(programomradekode -> entries.add(Map.entry("tilleggsinformasjonProgramomradekode", programomradekode)));
+
+            Optional.ofNullable(tilleggsinformasjon.getProgramomradenavn())
+                    .ifPresent(programomradenavn -> entries.add(Map.entry("tilleggsinformasjonProgramomradenavn", programomradenavn)));
+
+            Optional.ofNullable(tilleggsinformasjon.getSokertype())
+                    .ifPresent(sokertype -> entries.add(Map.entry("tilleggsinformasjonSokertype", sokertype)));
+
+        });
 
         return entries.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }

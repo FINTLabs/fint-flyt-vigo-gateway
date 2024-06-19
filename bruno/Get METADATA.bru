@@ -1,0 +1,144 @@
+meta {
+  name: Get METADATA
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://flyt.vigoiks.no/{{env}}{{org}}/api/intern/metadata?kildeapplikasjonId=4&kildeapplikasjonIntegrasjonId=OPPMELDING
+  body: none
+  auth: none
+}
+
+query {
+  kildeapplikasjonId: 4
+  kildeapplikasjonIntegrasjonId: OPPMELDING
+  ~bareSisteVersjoner: 
+}
+
+body:json {
+  {
+    "sourceApplicationId": 4,
+    "sourceApplicationIntegrationId": "SOKER_N",
+    "sourceApplicationIntegrationUri": null,
+    "integrationDisplayName": "Ny søker",
+    "version": 1,
+    "instanceMetadata": {
+      "instanceValueMetadata": [],
+      "instanceObjectCollectionMetadata": [],
+      "categories": [
+        {
+          "displayName": "Personalia",
+          "content": {
+            "instanceValueMetadata": [
+              {
+                "displayName": "Fødselsnummer",
+                "type": "STRING",
+                "key": "personaliaFodselsnummer"
+              },
+              {
+                "displayName": "Fornavn",
+                "type": "STRING",
+                "key": "personaliaFornavn"
+              },
+              {
+                "displayName": "Mellomnavn",
+                "type": "STRING",
+                "key": "personaliaMellomnavn"
+              },
+              {
+                "displayName": "Etternavn",
+                "type": "STRING",
+                "key": "personaliaEtternavn"
+              }
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        },
+        {
+          "displayName": "Kontaktinformasjon",
+          "content": {
+            "instanceValueMetadata": [
+              {
+                "displayName": "Telefonnummer",
+                "type": "STRING",
+                "key": "kontaktinformasjonTelefonnummer"
+              },
+              {
+                "displayName": "Epostadresse",
+                "type": "STRING",
+                "key": "kontaktinformasjonEpostadresse"
+              }
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        },
+        {
+          "displayName": "Inntaksadresse",
+          "content": {
+            "instanceValueMetadata": [
+              {
+                "displayName": "Gateadresse",
+                "type": "STRING",
+                "key": "inntaksadresseGateadresse"
+              },
+              {
+                "displayName": "Postnummer",
+                "type": "STRING",
+                "key": "inntaksadressePostnummer"
+              },
+              {
+                "displayName": "Poststed",
+                "type": "STRING",
+                "key": "inntaksadressePoststed"
+              }
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        },
+        {
+          "displayName": "Tilleggsinformasjon",
+          "content": {
+            "instanceValueMetadata": [
+              {
+                "displayName": "Skoleår",
+                "type": "STRING",
+                "key": "tilleggsinformasjonSkolear"
+              },
+              {
+                "displayName": "Skolenummer",
+                "type": "STRING",
+                "key": "tilleggsinformasjonSkolenummer"
+              },
+              {
+                "displayName": "Skolenavn",
+                "type": "STRING",
+                "key": "tilleggsinformasjonSkolenavn"
+              },
+              {
+                "displayName": "Programområdekode",
+                "type": "STRING",
+                "key": "tilleggsinformasjonProgramomradekode"
+              },
+              {
+                "displayName": "Programområdenavn",
+                "type": "STRING",
+                "key": "tilleggsinformasjonProgramomradenavn"
+              },
+              {
+                "displayName": "Søkertype",
+                "type": "STRING",
+                "key": "tilleggsinformasjonSokertype"
+              }
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        }
+      ]
+    }
+  }
+}
