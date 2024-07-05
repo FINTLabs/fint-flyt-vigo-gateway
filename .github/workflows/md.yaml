@@ -20,6 +20,7 @@ on:
         options:
           - fintlabs-no
           - ofk-no
+          - tromsfylke-no
 
 env:
   REGISTRY: ghcr.io
