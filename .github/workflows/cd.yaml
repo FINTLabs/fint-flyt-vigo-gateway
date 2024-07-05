@@ -54,7 +54,7 @@ jobs:
             deploy-every-branch: true
 
           - cluster: aks-api-fint-2022-02-08
-            org: ofk-no
+            org: [ ofk-no, tromsfylke-no ]
 
     steps:
       - uses: actions/checkout@v4
