@@ -20,6 +20,7 @@ on:
         options:
           - fintlabs-no
           - ofk-no
+          - bfk-no
           - tromsfylke-no
 
 env:
