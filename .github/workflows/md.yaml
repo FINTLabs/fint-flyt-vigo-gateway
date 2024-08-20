@@ -21,6 +21,7 @@ on:
           - fintlabs-no
           - ofk-no
           - bfk-no
+          - afk-no
           - tromsfylke-no
 
 env:
