@@ -56,8 +56,6 @@ jobs:
           - cluster: aks-api-fint-2022-02-08
             org: fintlabs-no
           - cluster: aks-api-fint-2022-02-08
-            org: bfk-no
-          - cluster: aks-api-fint-2022-02-08
             org: afk-no
 
     steps:
