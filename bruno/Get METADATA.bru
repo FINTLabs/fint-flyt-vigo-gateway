@@ -5,14 +5,14 @@ meta {
 }
 
 get {
-  url: https://flyt.vigoiks.no/{{env}}{{org}}/api/intern/metadata?kildeapplikasjonId=4&kildeapplikasjonIntegrasjonId=OPPMELDING
+  url: https://flyt.vigoiks.no/{{env}}{{org}}/api/intern/metadata?kildeapplikasjonId=4&kildeapplikasjonIntegrasjonId=OTJOURNAL
   body: none
   auth: none
 }
 
-query {
+params:query {
   kildeapplikasjonId: 4
-  kildeapplikasjonIntegrasjonId: OPPMELDING
+  kildeapplikasjonIntegrasjonId: OTJOURNAL
   ~bareSisteVersjoner: 
 }
 
