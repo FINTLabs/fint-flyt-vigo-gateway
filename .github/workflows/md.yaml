@@ -23,6 +23,7 @@ on:
           - bfk-no
           - afk-no
           - tromsfylke-no
+          - vlfk-no
 
 env:
   REGISTRY: ghcr.io
