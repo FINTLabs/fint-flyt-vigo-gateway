@@ -25,6 +25,7 @@ on:
           - tromsfylke-no
           - vlfk-no
           - rogfk-no
+          - innlandetfylke-no
 
 env:
   REGISTRY: ghcr.io
