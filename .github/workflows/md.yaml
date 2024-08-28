@@ -24,6 +24,7 @@ on:
           - afk-no
           - tromsfylke-no
           - vlfk-no
+          - rogfk-no
 
 env:
   REGISTRY: ghcr.io
