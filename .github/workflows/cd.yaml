@@ -57,8 +57,6 @@ jobs:
             org: fintlabs-no
           - cluster: aks-api-fint-2022-02-08
             org: vlfk-no
-          - cluster: aks-api-fint-2022-02-08
-            org: rogfk-no
 
     steps:
       - uses: actions/checkout@v4
