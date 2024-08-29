@@ -59,8 +59,6 @@ jobs:
             org: vlfk-no
           - cluster: aks-api-fint-2022-02-08
             org: rogfk-no
-          - cluster: aks-api-fint-2022-02-08
-            org: innlandetfylke-no
 
     steps:
       - uses: actions/checkout@v4
