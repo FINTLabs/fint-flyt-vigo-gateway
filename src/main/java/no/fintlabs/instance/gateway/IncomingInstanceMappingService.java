@@ -4,8 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import no.fintlabs.gateway.instance.InstanceMapper;
 import no.fintlabs.gateway.instance.model.File;
 import no.fintlabs.gateway.instance.model.instance.InstanceObject;
-import no.fintlabs.gateway.instance.web.FileClient;
-import no.fintlabs.instance.gateway.model.vigo.Dokument;
 import no.fintlabs.instance.gateway.model.vigo.IncomingInstance;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -15,6 +13,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,22 +21,18 @@ import java.util.stream.Stream;
 @Slf4j
 public class IncomingInstanceMappingService implements InstanceMapper<IncomingInstance> {
 
-    private final FileClient fileClient;
-
-    public IncomingInstanceMappingService(
-            FileClient fileClient
-    ) {
-        this.fileClient = fileClient;
-    }
-
     @Override
-    public Mono<InstanceObject> map(Long sourceApplicationId, IncomingInstance incomingInstance) {
+    public Mono<InstanceObject> map(
+            Long sourceApplicationId,
+            IncomingInstance incomingInstance,
+            Function<File, Mono<UUID>> persistFile
+    ) {
         if (incomingInstance.getDokument() == null) {
             return Mono.just(InstanceObject.builder()
                     .valuePerKey(toValuePerKey(incomingInstance, null))
                     .build());
         } else {
-            return postFile(sourceApplicationId, incomingInstance)
+            return postFile(sourceApplicationId, incomingInstance, persistFile)
                     .map(uuid -> InstanceObject.builder()
                             .valuePerKey(toValuePerKey(incomingInstance, uuid))
                             .build());
@@ -57,22 +52,22 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
 
         entries.add(Map.entry("tilpassetNavn1",
                 Stream.of(incomingInstance.getPersonalia().getFornavn(),
-                        incomingInstance.getPersonalia().getMellomnavn(),
-                        incomingInstance.getPersonalia().getEtternavn())
-                    .filter(s -> s != null)
-                    .collect(Collectors.joining(" "))
+                                incomingInstance.getPersonalia().getMellomnavn(),
+                                incomingInstance.getPersonalia().getEtternavn())
+                        .filter(s -> s != null)
+                        .collect(Collectors.joining(" "))
         ));
 
         entries.add(Map.entry("tilpassetNavn2",
                 Stream.of(incomingInstance.getPersonalia().getEtternavn(),
-                        incomingInstance.getPersonalia().getFornavn(),
-                        incomingInstance.getPersonalia().getMellomnavn())
-                    .filter(s -> s != null)
-                    .collect(Collectors.joining(" "))
+                                incomingInstance.getPersonalia().getFornavn(),
+                                incomingInstance.getPersonalia().getMellomnavn())
+                        .filter(s -> s != null)
+                        .collect(Collectors.joining(" "))
         ));
 
         entries.add(Map.entry("tilpassetNavn3",
-                Stream.of(incomingInstance.getPersonalia().getEtternavn() +",",
+                Stream.of(incomingInstance.getPersonalia().getEtternavn() + ",",
                                 incomingInstance.getPersonalia().getFornavn(),
                                 incomingInstance.getPersonalia().getMellomnavn())
                         .filter(s -> s != null)
@@ -88,7 +83,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
 
                     Optional.ofNullable(formatedDate(fodselsdato, "dd.MM.yyyy")).ifPresent(formatedFodselsdato ->
                             entries.add(Map.entry("tilpassetFodselsdato2", formatedFodselsdato)));
-                   
+
                 });
 
         entries.add(Map.entry("kontaktinformasjonTelefonnummer", incomingInstance.getKontaktinformasjon().getTelefonnummer()));
@@ -142,15 +137,19 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
     }
 
 
-    private Mono<UUID> postFile(Long sourceApplicationId, IncomingInstance incomingInstance) {
-        return fileClient.postFile(
+    private Mono<UUID> postFile(
+            Long sourceApplicationId,
+            IncomingInstance incomingInstance,
+            Function<File, Mono<UUID>> persistFile
+    ) {
+        return persistFile.apply(
                 File.builder()
-                    .name(incomingInstance.getDokument().getFilnavn())
-                    .type(MediaType.parseMediaType(incomingInstance.getDokument().getFormat()))
-                    .sourceApplicationId(sourceApplicationId)
-                    .sourceApplicationInstanceId(incomingInstance.getInstansId())
-                    .encoding("UTF-8")
-                    .base64Contents(incomingInstance.getDokument().getFil())
-                    .build());
+                        .name(incomingInstance.getDokument().getFilnavn())
+                        .type(MediaType.parseMediaType(incomingInstance.getDokument().getFormat()))
+                        .sourceApplicationId(sourceApplicationId)
+                        .sourceApplicationInstanceId(incomingInstance.getInstansId())
+                        .encoding("UTF-8")
+                        .base64Contents(incomingInstance.getDokument().getFil())
+                        .build());
     }
 }
