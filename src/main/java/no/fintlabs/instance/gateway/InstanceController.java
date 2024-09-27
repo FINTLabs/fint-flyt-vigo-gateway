@@ -5,7 +5,7 @@ import no.fintlabs.gateway.instance.InstanceProcessor;
 import no.fintlabs.gateway.instance.kafka.ArchiveCaseIdRequestService;
 import no.fintlabs.instance.gateway.model.Status;
 import no.fintlabs.instance.gateway.model.vigo.IncomingInstance;
-import no.fintlabs.resourceserver.security.client.sourceapplication.SourceApplicationAuthorizationUtil;
+import no.fintlabs.resourceserver.security.client.sourceapplication.SourceApplicationAuthorizationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,10 +23,16 @@ public class InstanceController {
 
     private final ArchiveCaseIdRequestService archiveCaseIdRequestService;
 
-    public InstanceController(InstanceProcessor<IncomingInstance> instanceProcessor,
-                              ArchiveCaseIdRequestService archiveCaseIdRequestService) {
+    private final SourceApplicationAuthorizationService sourceApplicationAuthorizationService;
+
+    public InstanceController(
+            InstanceProcessor<IncomingInstance> instanceProcessor,
+            ArchiveCaseIdRequestService archiveCaseIdRequestService,
+            SourceApplicationAuthorizationService sourceApplicationAuthorizationService
+    ) {
         this.instanceProcessor = instanceProcessor;
         this.archiveCaseIdRequestService = archiveCaseIdRequestService;
+        this.sourceApplicationAuthorizationService = sourceApplicationAuthorizationService;
     }
 
     @PostMapping("instance")
@@ -51,22 +57,22 @@ public class InstanceController {
     ) {
         return authenticationMono.map(authentication ->
                 {
-                    Long applicationId = SourceApplicationAuthorizationUtil.getSourceApplicationId(authentication);
+                    Long applicationId = sourceApplicationAuthorizationService.getSourceApplicationId(authentication);
 
                     log.debug("Get status for instance: {} in sourceApplication: {}", instanceId, applicationId);
 
                     return archiveCaseIdRequestService.getArchiveCaseId(applicationId, instanceId)
                             .map(caseId -> ResponseEntity.ok(Status.builder()
-                                    .instansId(instanceId)
-                                    .destinasjonsId(caseId)
-                                    .status("Instans godtatt av destinasjon").build()
+                                            .instansId(instanceId)
+                                            .destinasjonsId(caseId)
+                                            .status("Instans godtatt av destinasjon").build()
                                     )
                             )
                             .orElse(ResponseEntity
                                     .badRequest()
                                     .body(Status.builder()
-                                        .instansId(instanceId)
-                                        .status("Ukjent status").build()
+                                            .instansId(instanceId)
+                                            .status("Ukjent status").build()
                                     )
                             );
                 }
