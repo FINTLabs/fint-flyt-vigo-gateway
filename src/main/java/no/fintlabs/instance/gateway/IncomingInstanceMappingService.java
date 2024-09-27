@@ -5,10 +5,10 @@ import no.fintlabs.gateway.instance.InstanceMapper;
 import no.fintlabs.gateway.instance.model.File;
 import no.fintlabs.gateway.instance.model.instance.InstanceObject;
 import no.fintlabs.gateway.instance.web.FileClient;
-import no.fintlabs.instance.gateway.model.vigo.Dokument;
 import no.fintlabs.instance.gateway.model.vigo.IncomingInstance;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
@@ -59,7 +59,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                 Stream.of(incomingInstance.getPersonalia().getFornavn(),
                         incomingInstance.getPersonalia().getMellomnavn(),
                         incomingInstance.getPersonalia().getEtternavn())
-                    .filter(s -> s != null)
+                    .filter(s -> StringUtils.hasLength(s))
                     .collect(Collectors.joining(" "))
         ));
 
@@ -67,7 +67,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                 Stream.of(incomingInstance.getPersonalia().getEtternavn(),
                         incomingInstance.getPersonalia().getFornavn(),
                         incomingInstance.getPersonalia().getMellomnavn())
-                    .filter(s -> s != null)
+                    .filter(s -> StringUtils.hasLength(s))
                     .collect(Collectors.joining(" "))
         ));
 
@@ -75,7 +75,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                 Stream.of(incomingInstance.getPersonalia().getEtternavn() +",",
                                 incomingInstance.getPersonalia().getFornavn(),
                                 incomingInstance.getPersonalia().getMellomnavn())
-                        .filter(s -> s != null)
+                        .filter(s -> StringUtils.hasLength(s))
                         .collect(Collectors.joining(" "))
         ));
 

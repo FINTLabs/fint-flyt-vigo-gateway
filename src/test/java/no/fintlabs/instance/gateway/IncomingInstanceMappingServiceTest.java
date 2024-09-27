@@ -195,6 +195,42 @@ class IncomingInstanceMappingServiceTest {
     }
 
     @Test
+    void shouldCreateCustomizedFullNameWithEmptyMiddleName() {
+        InstanceObject result = incomingInstanceMappingService
+                .map(4L, createIncomingInstance()
+                                .personalia(Personalia.builder()
+                                        .fodselsnummer("12345678901")
+                                        .fornavn("Ola")
+                                        .mellomnavn("")
+                                        .etternavn("Nordmannsen")
+                                        .fodselsdato("19-12-3100")
+                                        .build()).build()
+                ).block();
+
+        assertEquals("Ola Nordmannsen", result.getValuePerKey().get("tilpassetNavn1"));
+        assertEquals("Nordmannsen Ola", result.getValuePerKey().get("tilpassetNavn2"));
+        assertEquals("Nordmannsen, Ola", result.getValuePerKey().get("tilpassetNavn3"));
+    }
+
+    @Test
+    void shouldCreateCustomizedFullNameWithNullMiddleName() {
+        InstanceObject result = incomingInstanceMappingService
+                .map(4L, createIncomingInstance()
+                                .personalia(Personalia.builder()
+                                        .fodselsnummer("12345678901")
+                                        .fornavn("Ola")
+                                        .mellomnavn(null)
+                                        .etternavn("Nordmannsen")
+                                        .fodselsdato("19-12-3100")
+                                        .build()).build()
+                ).block();
+
+        assertEquals("Ola Nordmannsen", result.getValuePerKey().get("tilpassetNavn1"));
+        assertEquals("Nordmannsen Ola", result.getValuePerKey().get("tilpassetNavn2"));
+        assertEquals("Nordmannsen, Ola", result.getValuePerKey().get("tilpassetNavn3"));
+    }
+
+    @Test
     void shouldNotAcceptInvalidFodselsdato() {
         InstanceObject result = incomingInstanceMappingService
                 .map(4L, createIncomingInstance()

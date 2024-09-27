@@ -51,7 +51,9 @@ jobs:
         cluster: [ aks-beta-fint-2021-11-23, aks-api-fint-2022-02-08 ]
         include:
           - cluster: aks-beta-fint-2021-11-23
+            org: bfk-no
             deploy-every-branch: true
+
         exclude:
           - cluster: aks-api-fint-2022-02-08
             org: fintlabs-no
