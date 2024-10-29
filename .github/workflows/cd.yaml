@@ -52,16 +52,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        org: [ fintlabs-no, ofk-no, tromsfylke-no, bfk-no, afk-no, vlfk-no, rogfk-no, innlandetfylke-no, agderfk-no ]
+        org: [ fintlabs-no, ofk-no, tromsfylke-no, bfk-no, afk-no, vlfk-no, rogfk-no, innlandetfylke-no, agderfk-no, mrfylke-no ]
         cluster: [ aks-beta-fint-2021-11-23, aks-api-fint-2022-02-08 ]
-        include:
-          - cluster: aks-beta-fint-2021-11-23
-            org: agderfk-no
-            deploy-every-branch: true
-
         exclude:
           - cluster: aks-api-fint-2022-02-08
             org: fintlabs-no
+          - cluster: aks-beta-fint-2021-11-23
+            org: mrfylke-no
 
     steps:
       - uses: actions/checkout@v4

@@ -26,6 +26,7 @@ on:
           - vlfk-no
           - rogfk-no
           - innlandetfylke-no
+          - mrfylke-no
 
 env:
   REGISTRY: ghcr.io
