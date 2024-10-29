@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: vestfoldfylke-no
+
+resources:
+  - ../../../base
+
+commonLabels:
+  app.kubernetes.io/instance: fint-flyt-vigo-gateway_vestfoldfylke_no
+  fintlabs.no/org-id: vestfoldfylke.no
+
+patches:
+  - patch: |-
+      - op: replace
+        path: "/spec/kafka/acls/0/topic"
+        value: "vestfoldfylke-no.flyt.*"
+      - op: replace
+        path: "/spec/orgId"
+        value: "vestfoldfylke.no"
+      - op: add
+        path: "/spec/url/basePath"
+        value: "/vestfoldfylke-no"
+      - op: replace
+        path: "/spec/ingress/basePath"
+        value: "/vestfoldfylke-no/api/vigo"
+      - op: add
+        path: "/spec/env/-"
+        value:
+          name: "logging.level.no.fintlabs.instance.gateway"
+          value: "INFO"
+    target:
+      kind: Application
+      name: fint-flyt-vigo-gateway
