@@ -14,14 +14,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Limit branch name
+        id: branch
+        run: |
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          echo "shortname=$(echo "$BRANCH_NAME" | cut -c1-40)" >> $GITHUB_OUTPUT
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=ref,event=branch,suffix=-{{sha}}
-            type=ref,event=pr,suffix=-{{sha}}
+            type=raw,value=${{ steps.branch.outputs.shortname }}-{{sha}}
             type=sha,prefix={{date 'YYYY-MM-DD-'}},enable={{is_default_branch}}
             type=raw,value=latest,enable={{is_default_branch}}
 
@@ -47,13 +52,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        org: [ fintlabs-no, ofk-no, tromsfylke-no, bfk-no, afk-no, vlfk-no, rogfk-no, innlandetfylke-no, mrfylke-no ]
+        org: [ fintlabs-no, ofk-no, tromsfylke-no, bfk-no, afk-no, vlfk-no, rogfk-no, innlandetfylke-no, agderfk-no, mrfylke-no ]
         cluster: [ aks-beta-fint-2021-11-23, aks-api-fint-2022-02-08 ]
-        include:
-          - cluster: aks-beta-fint-2021-11-23
-            org: bfk-no
-            deploy-every-branch: true
-
         exclude:
           - cluster: aks-api-fint-2022-02-08
             org: fintlabs-no
