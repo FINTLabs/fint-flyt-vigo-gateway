@@ -20,7 +20,7 @@ spec:
     metrics:
       enabled: true
       port: "8080"
-      path: /acturator/prometheus
+      path: /metrics
     logging:
       loki: true
   kafka:
