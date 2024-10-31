@@ -16,6 +16,12 @@ spec:
   imagePullPolicy: Always
   orgId: fintlabs.no
   image: ghcr.io/fintlabs/fint-flyt-vigo-gateway:sha-0000000
+  observability:
+    metrics:
+      enabled: true
+      port: "8080"
+    logging:
+      loki: true
   kafka:
     enabled: true
     acls:

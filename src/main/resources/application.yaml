@@ -22,3 +22,11 @@ spring:
       - flyt-logging
       - flyt-resource-server
       - flyt-file-client
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  security:
+    enabled: false

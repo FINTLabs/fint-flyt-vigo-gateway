@@ -1,6 +1,7 @@
 package no.fintlabs.instance.gateway;
 
 import lombok.extern.slf4j.Slf4j;
+import no.fintlabs.Observability;
 import no.fintlabs.gateway.instance.InstanceProcessor;
 import no.fintlabs.gateway.instance.kafka.ArchiveCaseIdRequestService;
 import no.fintlabs.instance.gateway.model.Status;
@@ -25,14 +26,18 @@ public class InstanceController {
 
     private final SourceApplicationAuthorizationService sourceApplicationAuthorizationService;
 
+    private final Observability observability;
+
     public InstanceController(
             InstanceProcessor<IncomingInstance> instanceProcessor,
             ArchiveCaseIdRequestService archiveCaseIdRequestService,
-            SourceApplicationAuthorizationService sourceApplicationAuthorizationService
+            SourceApplicationAuthorizationService sourceApplicationAuthorizationService,
+            Observability observability
     ) {
         this.instanceProcessor = instanceProcessor;
         this.archiveCaseIdRequestService = archiveCaseIdRequestService;
         this.sourceApplicationAuthorizationService = sourceApplicationAuthorizationService;
+        this.observability = observability;
     }
 
     @PostMapping("instance")
@@ -41,6 +46,8 @@ public class InstanceController {
             @AuthenticationPrincipal Mono<Authentication> authenticationMono
     ) {
         log.debug("Incoming instance: {}", incomingInstance.getInstansId());
+
+        observability.incrementVigoDocumentCounters(incomingInstance.getDokumenttype());
 
         return authenticationMono.flatMap(
                 authentication -> instanceProcessor.processInstance(

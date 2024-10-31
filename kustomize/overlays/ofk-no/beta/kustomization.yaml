@@ -28,6 +28,9 @@ patches:
         value:
           name: "logging.level.no.fintlabs.instance.gateway"
           value: "DEBUG"
+      - op: add
+        path: "/spec/observability/metrics/path"
+        value: "/beta/ofk-no/actuator/prometheus"
     target:
       kind: Application
       name: fint-flyt-vigo-gateway
