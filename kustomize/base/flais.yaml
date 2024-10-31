@@ -21,6 +21,8 @@ spec:
       enabled: true
       port: "8080"
       path: /acturator/prometheus
+    logging:
+      loki: true
   kafka:
     enabled: true
     acls:
