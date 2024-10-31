@@ -30,7 +30,7 @@ patches:
           value: "DEBUG"
       - op: replace
         path: "/spec/observability/metrics/path"
-        value: "/beta/ofk-no/acturator/prometheus"
+        value: "/beta/ofk-no/metrics"
     target:
       kind: Application
       name: fint-flyt-vigo-gateway
