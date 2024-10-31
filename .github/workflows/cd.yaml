@@ -54,6 +54,11 @@ jobs:
       matrix:
         org: [ fintlabs-no, ofk-no, tromsfylke-no, bfk-no, afk-no, vlfk-no, rogfk-no, innlandetfylke-no, agderfk-no, mrfylke-no, vestfoldfylke-no ]
         cluster: [ aks-beta-fint-2021-11-23, aks-api-fint-2022-02-08 ]
+        include:
+          - cluster: aks-beta-fint-2021-11-23
+            org: ofk-no
+            deploy-every-branch: true
+
         exclude:
           - cluster: aks-api-fint-2022-02-08
             org: fintlabs-no
