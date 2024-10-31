@@ -16,10 +16,11 @@ spec:
   imagePullPolicy: Always
   orgId: fintlabs.no
   image: ghcr.io/fintlabs/fint-flyt-vigo-gateway:sha-0000000
-  prometheus:
-    enabled: true
-    port: "8080"
-    path: /actuator/prometheus
+  observability:
+    metrics:
+      enabled: true
+      port: "8080"
+      path: /acturator/prometheus
   kafka:
     enabled: true
     acls:
