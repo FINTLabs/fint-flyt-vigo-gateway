@@ -87,6 +87,10 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
 
                 });
 
+        Optional.ofNullable(incomingInstance.getTilleggsinformasjon()).ifPresent(tilleggsinformasjon ->
+            Optional.ofNullable(tilleggsinformasjon.getSkolear()).ifPresent(skolear ->
+                    entries.add(Map.entry("tilpassetSkolear", formatedSkoleaar(skolear)))));
+
         entries.add(Map.entry("kontaktinformasjonTelefonnummer", incomingInstance.getKontaktinformasjon().getTelefonnummer()));
         entries.add(Map.entry("kontaktinformasjonEpostadresse", incomingInstance.getKontaktinformasjon().getEpostadresse()));
 
@@ -125,6 +129,17 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
         });
 
         return entries.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    // 20242025 -> 2024/2025
+    private static String formatedSkoleaar(String skolear) {
+        int length = skolear.length();
+        if (length == 8) {
+            return skolear.substring(0, 4) + "/" + skolear.substring(4);
+        } else {
+            log.warn("Not posible to format skoleaar: {}", skolear);
+            return skolear;
+        }
     }
 
     private static String formatedDate(String fodselsdato, String format) {

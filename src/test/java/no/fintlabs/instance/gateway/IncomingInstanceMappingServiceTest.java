@@ -64,7 +64,7 @@ class IncomingInstanceMappingServiceTest {
         assertEquals("text/plain", valuePerKey.get("dokumentFormat"));
         assertEquals(uuid.toString(), valuePerKey.get("dokumentFil"));
 
-        assertEquals("2024/2025", valuePerKey.get("tilleggsinformasjonSkolear"));
+        assertEquals("20242025", valuePerKey.get("tilleggsinformasjonSkolear"));
         assertEquals("1", valuePerKey.get("tilleggsinformasjonSkolenummer"));
         assertEquals("Oslo katedralskole", valuePerKey.get("tilleggsinformasjonSkolenavn"));
         assertEquals("LA1", valuePerKey.get("tilleggsinformasjonProgramomradekode"));
@@ -128,9 +128,10 @@ class IncomingInstanceMappingServiceTest {
         assertEquals("1234", valuePerKey.get("inntaksadressePostnummer"));
         assertEquals("Oslo", valuePerKey.get("inntaksadressePoststed"));
 
-        assertEquals("2024/2025", valuePerKey.get("tilleggsinformasjonSkolear"));
+        assertEquals("20242025", valuePerKey.get("tilleggsinformasjonSkolear"));
         assertEquals("Oslo katedralskole", valuePerKey.get("tilleggsinformasjonSkolenavn"));
         assertNull(valuePerKey.get("tilleggsinformasjonSkolenummer"));
+        assertEquals("2024/2025", valuePerKey.get("tilpassetSkolear"));
     }
 
     @Test
@@ -326,7 +327,7 @@ class IncomingInstanceMappingServiceTest {
     private IncomingInstance.IncomingInstanceBuilder createValidIncomingInstanceWithTilleggsinformasjon() {
         return createIncomingInstance()
                 .tilleggsinformasjon(Tilleggsinformasjon.builder()
-                        .skolear("2024/2025")
+                        .skolear("20242025")
                         .skolenummer("1")
                         .skolenavn("Oslo katedralskole")
                         .programomradekode("LA1")
@@ -364,7 +365,7 @@ class IncomingInstanceMappingServiceTest {
                         .build())
 
                 .tilleggsinformasjon(Tilleggsinformasjon.builder()
-                        .skolear("2024/2025")
+                        .skolear("20242025")
                         .skolenavn("Oslo katedralskole")
                         .build())
                 .build();
