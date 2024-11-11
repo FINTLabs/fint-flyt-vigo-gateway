@@ -102,6 +102,13 @@ class IncomingInstanceMappingServiceTest {
         assertEquals("dokument.pdf", valuePerKey.get("dokumentFilnavn"));
         assertEquals("text/plain", valuePerKey.get("dokumentFormat"));
         assertEquals(uuid.toString(), valuePerKey.get("dokumentFil"));
+
+        //assertEquals("", valuePerKey.get("tilleggsinformasjonSkolear"));
+        assertEquals("", valuePerKey.get("tilleggsinformasjonSkolenavn"));
+        assertEquals("", valuePerKey.get("tilleggsinformasjonSkolenummer"));
+        assertEquals("", valuePerKey.get("tilleggsinformasjonProgramomradekode"));
+        assertEquals("", valuePerKey.get("tilleggsinformasjonProgramomradenavn"));
+        assertEquals("", valuePerKey.get("tilleggsinformasjonSokertype"));
     }
 
     @Test
@@ -127,11 +134,6 @@ class IncomingInstanceMappingServiceTest {
         assertEquals("Osloveien 1", valuePerKey.get("inntaksadresseGateadresse"));
         assertEquals("1234", valuePerKey.get("inntaksadressePostnummer"));
         assertEquals("Oslo", valuePerKey.get("inntaksadressePoststed"));
-
-        assertEquals("20242025", valuePerKey.get("tilleggsinformasjonSkolear"));
-        assertEquals("Oslo katedralskole", valuePerKey.get("tilleggsinformasjonSkolenavn"));
-        assertNull(valuePerKey.get("tilleggsinformasjonSkolenummer"));
-        assertEquals("2024/2025", valuePerKey.get("tilpassetSkolear"));
     }
 
     @Test
@@ -320,8 +322,9 @@ class IncomingInstanceMappingServiceTest {
                         .dato("2021-01-01")
                         .filnavn("dokument.pdf")
                         .format("text/plain")
-                        .build());
+                        .build())
 
+                .tilleggsinformasjon(Tilleggsinformasjon.builder().build());
     }
 
     private IncomingInstance.IncomingInstanceBuilder createValidIncomingInstanceWithTilleggsinformasjon() {

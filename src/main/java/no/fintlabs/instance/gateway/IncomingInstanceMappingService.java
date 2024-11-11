@@ -22,6 +22,8 @@ import java.util.stream.Stream;
 @Slf4j
 public class IncomingInstanceMappingService implements InstanceMapper<IncomingInstance> {
 
+    public static final String EMPTY_STRING = "";
+
     @Override
     public Mono<InstanceObject> map(
             Long sourceApplicationId,
@@ -107,25 +109,23 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
         });
 
         Optional.ofNullable(incomingInstance.getTilleggsinformasjon()).ifPresent(tilleggsinformasjon -> {
+            entries.add(Map.entry("tilleggsinformasjonSkolear",
+                    Optional.ofNullable(tilleggsinformasjon.getSkolear()).orElse(EMPTY_STRING)));
 
-            Optional.ofNullable(tilleggsinformasjon.getSkolear())
-                    .ifPresent(skolear -> entries.add(Map.entry("tilleggsinformasjonSkolear", skolear)));
+            entries.add(Map.entry("tilleggsinformasjonSkolenummer",
+                    Optional.ofNullable(tilleggsinformasjon.getSkolenummer()).orElse(EMPTY_STRING)));
 
-            Optional.ofNullable(tilleggsinformasjon.getSkolenummer())
-                    .ifPresent(skolenummer -> entries.add(Map.entry("tilleggsinformasjonSkolenummer", skolenummer)));
+            entries.add(Map.entry("tilleggsinformasjonSkolenavn",
+                    Optional.ofNullable(tilleggsinformasjon.getSkolenavn()).orElse(EMPTY_STRING)));
 
-            Optional.ofNullable(tilleggsinformasjon.getSkolenavn())
-                    .ifPresent(skolenavn -> entries.add(Map.entry("tilleggsinformasjonSkolenavn", skolenavn)));
+            entries.add(Map.entry("tilleggsinformasjonProgramomradekode",
+                    Optional.ofNullable(tilleggsinformasjon.getProgramomradekode()).orElse(EMPTY_STRING)));
 
-            Optional.ofNullable(tilleggsinformasjon.getProgramomradekode())
-                    .ifPresent(programomradekode -> entries.add(Map.entry("tilleggsinformasjonProgramomradekode", programomradekode)));
+            entries.add(Map.entry("tilleggsinformasjonProgramomradenavn",
+                    Optional.ofNullable(tilleggsinformasjon.getProgramomradenavn()).orElse(EMPTY_STRING)));
 
-            Optional.ofNullable(tilleggsinformasjon.getProgramomradenavn())
-                    .ifPresent(programomradenavn -> entries.add(Map.entry("tilleggsinformasjonProgramomradenavn", programomradenavn)));
-
-            Optional.ofNullable(tilleggsinformasjon.getSokertype())
-                    .ifPresent(sokertype -> entries.add(Map.entry("tilleggsinformasjonSokertype", sokertype)));
-
+            entries.add(Map.entry("tilleggsinformasjonSokertype",
+                    Optional.ofNullable(tilleggsinformasjon.getSokertype()).orElse(EMPTY_STRING)));
         });
 
         return entries.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
