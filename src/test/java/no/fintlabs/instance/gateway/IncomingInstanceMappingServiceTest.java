@@ -177,7 +177,7 @@ class IncomingInstanceMappingServiceTest {
                         persistFile
                 ).block();
 
-        assertFalse(result.getValuePerKey().containsKey("personaliaFodselsdato"));
+        assertEquals("", result.getValuePerKey().get("personaliaFodselsdato"));
     }
 
     @Test
@@ -279,8 +279,8 @@ class IncomingInstanceMappingServiceTest {
                         persistFile
                 ).block();
 
-        assertFalse(result.getValuePerKey().containsKey("tilpassetFodselsdato1"));
-        assertFalse(result.getValuePerKey().containsKey("tilpassetFodselsdato2"));
+        assertEquals("", result.getValuePerKey().get("tilpassetFodselsdato1"));
+        assertEquals("", result.getValuePerKey().get("tilpassetFodselsdato2"));
     }
 
     @Test
@@ -322,6 +322,10 @@ class IncomingInstanceMappingServiceTest {
                         .dato("2021-01-01")
                         .filnavn("dokument.pdf")
                         .format("text/plain")
+                        .build())
+
+                .tilleggsinformasjon(Tilleggsinformasjon.builder()
+                        .skolenavn("")
                         .build())
 
                 .tilleggsinformasjon(Tilleggsinformasjon.builder().build());
