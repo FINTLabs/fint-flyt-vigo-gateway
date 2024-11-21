@@ -16,7 +16,7 @@ body:json {
     "sourceApplicationIntegrationId": "SOKNAD",
     "sourceApplicationIntegrationUri": null,
     "integrationDisplayName": "Søknad til arkivet",
-    "version": 1,
+    "version": "{{next-version}}",
     "instanceMetadata": {
       "instanceValueMetadata": [],
       "instanceObjectCollectionMetadata": [],
@@ -81,6 +81,19 @@ body:json {
               { "displayName": "Programområdekode", "key": "tilleggsinformasjonProgramomradekode", "type": "STRING" },
               { "displayName": "Programområdenavn", "key": "tilleggsinformasjonProgramomradenavn", "type": "STRING" },
               { "displayName": "Søkertype", "key": "tilleggsinformasjonSokertype", "type": "STRING" }
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        },
+        {
+          "displayName": "Tilpasset",
+          "content": {
+            "instanceValueMetadata": [
+              { "displayName": "Navn (fornavn mellomnavn etternavn)", "type": "STRING", "key": "tilpassetNavn1" },
+              { "displayName": "Navn (etternavn fornavn mellomnavn)", "type": "STRING", "key": "tilpassetNavn2" },
+              { "displayName": "Navn (etternavn, fornavn mellomnavn)", "type": "STRING", "key": "tilpassetNavn3" },
+              { "displayName": "Skoleår (YYYY/YYYY)", "type": "STRING", "key": "tilpassetSkolear" }
             ],
             "instanceObjectCollectionMetadata": [],
             "categories": []

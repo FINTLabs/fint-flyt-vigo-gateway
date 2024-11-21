@@ -16,7 +16,7 @@ body:json {
     "sourceApplicationIntegrationId": "OPPMELDING",
     "sourceApplicationIntegrationUri": null,
     "integrationDisplayName": "Prøveoppmelding til arkivering",
-    "version": 1,
+    "version": "{{next-version}}",
     "instanceMetadata": {
       "instanceValueMetadata": [],
       "instanceObjectCollectionMetadata": [],
@@ -83,6 +83,18 @@ body:json {
               { "displayName": "Kontraktspartnavn", "key": "tilleggsinformasjonKontraktspartnavn", "type": "STRING" },
               { "displayName": "Programområdekode", "key": "tilleggsinformasjonProgramomradekode", "type": "STRING" },
               { "displayName": "Programområdenavn", "key": "tilleggsinformasjonProgramomradenavn", "type": "STRING" }
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        },
+        {
+          "displayName": "Tilpasset",
+          "content": {
+            "instanceValueMetadata": [
+              { "displayName": "Navn (fornavn mellomnavn etternavn)", "type": "STRING", "key": "tilpassetNavn1" },
+              { "displayName": "Navn (etternavn fornavn mellomnavn)", "type": "STRING", "key": "tilpassetNavn2" },
+              { "displayName": "Navn (etternavn, fornavn mellomnavn)", "type": "STRING", "key": "tilpassetNavn3" }
             ],
             "instanceObjectCollectionMetadata": [],
             "categories": []

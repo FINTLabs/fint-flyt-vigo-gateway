@@ -64,7 +64,7 @@ class IncomingInstanceMappingServiceTest {
         assertEquals("text/plain", valuePerKey.get("dokumentFormat"));
         assertEquals(uuid.toString(), valuePerKey.get("dokumentFil"));
 
-        assertEquals("2024/2025", valuePerKey.get("tilleggsinformasjonSkolear"));
+        assertEquals("20242025", valuePerKey.get("tilleggsinformasjonSkolear"));
         assertEquals("1", valuePerKey.get("tilleggsinformasjonSkolenummer"));
         assertEquals("Oslo katedralskole", valuePerKey.get("tilleggsinformasjonSkolenavn"));
         assertEquals("LA1", valuePerKey.get("tilleggsinformasjonProgramomradekode"));
@@ -102,6 +102,13 @@ class IncomingInstanceMappingServiceTest {
         assertEquals("dokument.pdf", valuePerKey.get("dokumentFilnavn"));
         assertEquals("text/plain", valuePerKey.get("dokumentFormat"));
         assertEquals(uuid.toString(), valuePerKey.get("dokumentFil"));
+
+        //assertEquals("", valuePerKey.get("tilleggsinformasjonSkolear"));
+        assertEquals("", valuePerKey.get("tilleggsinformasjonSkolenavn"));
+        assertEquals("", valuePerKey.get("tilleggsinformasjonSkolenummer"));
+        assertEquals("", valuePerKey.get("tilleggsinformasjonProgramomradekode"));
+        assertEquals("", valuePerKey.get("tilleggsinformasjonProgramomradenavn"));
+        assertEquals("", valuePerKey.get("tilleggsinformasjonSokertype"));
     }
 
     @Test
@@ -127,10 +134,6 @@ class IncomingInstanceMappingServiceTest {
         assertEquals("Osloveien 1", valuePerKey.get("inntaksadresseGateadresse"));
         assertEquals("1234", valuePerKey.get("inntaksadressePostnummer"));
         assertEquals("Oslo", valuePerKey.get("inntaksadressePoststed"));
-
-        assertEquals("2024/2025", valuePerKey.get("tilleggsinformasjonSkolear"));
-        assertEquals("Oslo katedralskole", valuePerKey.get("tilleggsinformasjonSkolenavn"));
-        assertNull(valuePerKey.get("tilleggsinformasjonSkolenummer"));
     }
 
     @Test
@@ -174,7 +177,7 @@ class IncomingInstanceMappingServiceTest {
                         persistFile
                 ).block();
 
-        assertFalse(result.getValuePerKey().containsKey("personaliaFodselsdato"));
+        assertEquals("", result.getValuePerKey().get("personaliaFodselsdato"));
     }
 
     @Test
@@ -276,8 +279,8 @@ class IncomingInstanceMappingServiceTest {
                         persistFile
                 ).block();
 
-        assertFalse(result.getValuePerKey().containsKey("tilpassetFodselsdato1"));
-        assertFalse(result.getValuePerKey().containsKey("tilpassetFodselsdato2"));
+        assertEquals("", result.getValuePerKey().get("tilpassetFodselsdato1"));
+        assertEquals("", result.getValuePerKey().get("tilpassetFodselsdato2"));
     }
 
     @Test
@@ -319,14 +322,19 @@ class IncomingInstanceMappingServiceTest {
                         .dato("2021-01-01")
                         .filnavn("dokument.pdf")
                         .format("text/plain")
-                        .build());
+                        .build())
 
+                .tilleggsinformasjon(Tilleggsinformasjon.builder()
+                        .skolenavn("")
+                        .build())
+
+                .tilleggsinformasjon(Tilleggsinformasjon.builder().build());
     }
 
     private IncomingInstance.IncomingInstanceBuilder createValidIncomingInstanceWithTilleggsinformasjon() {
         return createIncomingInstance()
                 .tilleggsinformasjon(Tilleggsinformasjon.builder()
-                        .skolear("2024/2025")
+                        .skolear("20242025")
                         .skolenummer("1")
                         .skolenavn("Oslo katedralskole")
                         .programomradekode("LA1")
@@ -364,7 +372,7 @@ class IncomingInstanceMappingServiceTest {
                         .build())
 
                 .tilleggsinformasjon(Tilleggsinformasjon.builder()
-                        .skolear("2024/2025")
+                        .skolear("20242025")
                         .skolenavn("Oslo katedralskole")
                         .build())
                 .build();
