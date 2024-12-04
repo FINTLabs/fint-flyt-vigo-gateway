@@ -29,7 +29,7 @@ spec:
     basePath: path
   env:
     - name: JAVA_TOOL_OPTIONS
-      value: '-XX:+ExitOnOutOfMemoryError -Xmx1840M'
+      value: '-XX:+ExitOnOutOfMemoryError -Xmx475M'
     - name: fint.flyt.resource-server.security.api.external.enabled
       value: "true"
     - name: fint.flyt.resource-server.security.api.external.authorized-client-ids
@@ -39,11 +39,11 @@ spec:
         name: fint-flyt-file-oauth2-client
   resources:
     limits:
-      memory: "2048Mi"
-      cpu: "1"
+      memory: "500Mi"
+      cpu: "200m"
     requests:
-      memory: "512Mi"
-      cpu: "100m"
+      memory: "400Mi"
+      cpu: "50m"
   restartPolicy: Always
   replicas: 1
   strategy:
