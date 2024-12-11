@@ -1,0 +1,106 @@
+meta {
+  name: KONTRENDVED
+  type: http
+  seq: 12
+}
+
+post {
+  url: https://flyt.vigoiks.no/{{env}}{{org}}/api/intern/metadata
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "sourceApplicationId": 4,
+    "sourceApplicationIntegrationId": "KONTRENDVED",
+    "sourceApplicationIntegrationUri": null,
+    "integrationDisplayName": "Fylkets vedtak om kontraktsendring",
+    "version": "{{next-version}}",
+    "instanceMetadata": {
+      "instanceValueMetadata": [],
+      "instanceObjectCollectionMetadata": [],
+      "categories": [
+        {
+          "displayName": "Personalia",
+          "content": {
+            "instanceValueMetadata": [
+              { "displayName": "Fødselsnummer", "key": "personaliaFodselsnummer", "type": "STRING" },
+              { "displayName": "Fornavn", "key": "personaliaFornavn", "type": "STRING" },
+              { "displayName": "Mellomnavn", "key": "personaliaMellomnavn", "type": "STRING" },
+              { "displayName": "Etternavn", "key": "personaliaEtternavn", "type": "STRING" }
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        },
+        {
+          "displayName": "Kontaktinformasjon",
+          "content": {
+            "instanceValueMetadata": [
+              { "displayName": "Telefonnummer", "key": "kontaktinformasjonTelefonnummer", "type": "STRING" },
+              { "displayName": "Epostadresse", "key": "kontaktinformasjonEpostadresse", "type": "STRING" }
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        },
+        {
+          "displayName": "Inntaksadresse",
+          "content": {
+            "instanceValueMetadata": [
+              { "displayName": "Gateadresse", "key": "inntaksadresseGateadresse", "type": "STRING" },
+              { "displayName": "Postnummer", "key": "inntaksadressePostnummer", "type": "STRING" },
+              { "displayName": "Poststed", "key": "inntaksadressePoststed", "type": "STRING" }
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        },
+        {
+          "displayName": "Dokument",
+          "content": {
+            "instanceValueMetadata": [
+              { "displayName": "Tittel", "key": "dokumentTittel", "type": "STRING" },
+              { "displayName": "Dato", "key": "dokumentDato", "type": "STRING" },
+              { "displayName": "Filnavn", "key": "dokumentFilnavn", "type": "STRING" },
+              { "displayName": "Fil", "key": "dokumentFil", "type": "FILE" },
+              { "displayName": "Format", "key": "dokumentFormat", "type": "STRING" }
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        },
+        {
+          "displayName": "Tilleggsinformasjon",
+          "content": {
+            "instanceValueMetadata": [
+              { "displayName": "Kontraktsnummer", "key": "tilleggsinformasjonKontraktsnummer", "type": "STRING" },
+              { "displayName": "Organisasjonsnummer", "key": "tilleggsinformasjonOrganisasjonsnummer", "type": "STRING" },
+              { "displayName": "Organisasjonsnavn", "key": "tilleggsinformasjonOrganisasjonsnavn", "type": "STRING" },
+              { "displayName": "Endringstype", "key": "tilleggsinformasjonEndringstype", "type": "STRING" },
+              { "displayName": "Programområdekode", "key": "tilleggsinformasjonProgramomradekode", "type": "STRING" },
+              { "displayName": "Programområdenavn", "key": "tilleggsinformasjonProgramomradenavn", "type": "STRING" },
+              { "displayName": "Vedtaksresultat", "key": "tilleggsinformasjonVedtaksresultat", "type": "STRING" }
+  
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        },
+        {
+          "displayName": "Tilpasset",
+          "content": {
+            "instanceValueMetadata": [
+              { "displayName": "Navn (fornavn mellomnavn etternavn)", "type": "STRING", "key": "tilpassetNavn1" },
+              { "displayName": "Navn (etternavn fornavn mellomnavn)", "type": "STRING", "key": "tilpassetNavn2" },
+              { "displayName": "Navn (etternavn, fornavn mellomnavn)", "type": "STRING", "key": "tilpassetNavn3" }
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        }
+      ]
+    }
+  }
+}
