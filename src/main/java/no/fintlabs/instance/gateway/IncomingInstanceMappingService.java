@@ -84,11 +84,11 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
         ));
 
         entries.add(Map.entry("tilpassetFodselsdato1",
-                    Optional.ofNullable(incomingInstance.getPersonalia())
-                            .map(Personalia::getFodselsdato)
-                            .map(fodselsdato -> formatedDate(fodselsdato, "ddMMyy"))
-                            .orElse(EMPTY_STRING)
-                ));
+                Optional.ofNullable(incomingInstance.getPersonalia())
+                        .map(Personalia::getFodselsdato)
+                        .map(fodselsdato -> formatedDate(fodselsdato, "ddMMyy"))
+                        .orElse(EMPTY_STRING)
+        ));
 
         entries.add(Map.entry("tilpassetFodselsdato2",
                 Optional.ofNullable(incomingInstance.getPersonalia())
@@ -160,7 +160,69 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                 Map.entry("tilleggsinformasjonProgramomradenavn",
                         tillegg.map(Tilleggsinformasjon::getProgramomradenavn).orElse(EMPTY_STRING)),
                 Map.entry("tilleggsinformasjonSokertype",
-                        tillegg.map(Tilleggsinformasjon::getSokertype).orElse(EMPTY_STRING))
+                        tillegg.map(Tilleggsinformasjon::getSokertype).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonendringstype",
+                        tillegg.map(Tilleggsinformasjon::getEndringstype).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonfylkessignatar",
+                        tillegg.map(Tilleggsinformasjon::getFylkessignatar).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonkandidattype",
+                        tillegg.map(Tilleggsinformasjon::getKandidattype).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonkontraktsnummer",
+                        tillegg.map(Tilleggsinformasjon::getKontraktsnummer).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonkontraktspartEpost",
+                        tillegg.map(Tilleggsinformasjon::getKontraktspartEpost).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonkontraktspartkode",
+                        tillegg.map(Tilleggsinformasjon::getKontraktspartkode).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonkontraktspartnavn",
+                        tillegg.map(Tilleggsinformasjon::getKontraktspartnavn).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonkontraktspartnummer",
+                        tillegg.map(Tilleggsinformasjon::getKontraktspartnummer).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonkontraktstype",
+                        tillegg.map(Tilleggsinformasjon::getKontraktstype).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonlastetOppAv",
+                        tillegg.map(Tilleggsinformasjon::getLastetOppAv).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonlastetOppDato",
+                        tillegg.map(Tilleggsinformasjon::getLastetOppDato).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonnemndnavn",
+                        tillegg.map(Tilleggsinformasjon::getNemndnavn).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonnemndnummer",
+                        tillegg.map(Tilleggsinformasjon::getNemndnummer).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonoppmeldtDato",
+                        tillegg.map(Tilleggsinformasjon::getOppmeldtDato).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonorganisasjonsnavn",
+                        tillegg.map(Tilleggsinformasjon::getOrganisasjonsnavn).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonorganisasjonsnummer",
+                        tillegg.map(Tilleggsinformasjon::getOrganisasjonsnummer).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonprogramomradekode",
+                        tillegg.map(Tilleggsinformasjon::getProgramomradekode).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonprogramomradenavn",
+                        tillegg.map(Tilleggsinformasjon::getProgramomradenavn).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonprovenr",
+                        tillegg.map(Tilleggsinformasjon::getProvenr).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonprovestatus",
+                        tillegg.map(Tilleggsinformasjon::getProvestatus).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonprovetype",
+                        tillegg.map(Tilleggsinformasjon::getProvetype).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonresultatPraktisk",
+                        tillegg.map(Tilleggsinformasjon::getResultatPraktisk).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonresultatTeori",
+                        tillegg.map(Tilleggsinformasjon::getResultatTeori).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonsokertype",
+                        tillegg.map(Tilleggsinformasjon::getSokertype).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonvedleggBeskrivelse",
+                        tillegg.map(Tilleggsinformasjon::getVedleggBeskrivelse).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonvedleggTittel",
+                        tillegg.map(Tilleggsinformasjon::getVedleggTittel).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonvedtaksresultat",
+                        tillegg.map(Tilleggsinformasjon::getVedtaksresultat).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonfnr",
+                        tillegg.map(Tilleggsinformasjon::getFnr).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonvgdoknr",
+                        tillegg.map(Tilleggsinformasjon::getVgdoknr).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonvgdoktype",
+                        tillegg.map(Tilleggsinformasjon::getVgdoktype).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonutsendtDato",
+                        tillegg.map(Tilleggsinformasjon::getUtsendtDato).orElse(EMPTY_STRING))
         );
     }
 
@@ -184,7 +246,6 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
             return null;
         }
     }
-
 
     private Mono<UUID> postFile(
             Long sourceApplicationId,
