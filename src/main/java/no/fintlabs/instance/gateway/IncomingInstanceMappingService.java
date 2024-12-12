@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -63,7 +62,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                 Stream.of(incomingInstance.getPersonalia().getFornavn(),
                                 incomingInstance.getPersonalia().getMellomnavn(),
                                 incomingInstance.getPersonalia().getEtternavn())
-                        .filter(s -> StringUtils.hasLength(s))
+                        .filter(StringUtils::hasLength)
                         .collect(Collectors.joining(" "))
         ));
 
@@ -71,7 +70,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                 Stream.of(incomingInstance.getPersonalia().getEtternavn(),
                                 incomingInstance.getPersonalia().getFornavn(),
                                 incomingInstance.getPersonalia().getMellomnavn())
-                        .filter(s -> StringUtils.hasLength(s))
+                        .filter(StringUtils::hasLength)
                         .collect(Collectors.joining(" "))
         ));
 
@@ -79,7 +78,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                 Stream.of(incomingInstance.getPersonalia().getEtternavn() + ",",
                                 incomingInstance.getPersonalia().getFornavn(),
                                 incomingInstance.getPersonalia().getMellomnavn())
-                        .filter(s -> StringUtils.hasLength(s))
+                        .filter(StringUtils::hasLength)
                         .collect(Collectors.joining(" "))
         ));
 
@@ -161,75 +160,74 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                         tillegg.map(Tilleggsinformasjon::getProgramomradenavn).orElse(EMPTY_STRING)),
                 Map.entry("tilleggsinformasjonSokertype",
                         tillegg.map(Tilleggsinformasjon::getSokertype).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonendringstype",
+                Map.entry("tilleggsinformasjonEndringstype",
                         tillegg.map(Tilleggsinformasjon::getEndringstype).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonfylkessignatar",
+                Map.entry("tilleggsinformasjonFylkessignatar",
                         tillegg.map(Tilleggsinformasjon::getFylkessignatar).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonkandidattype",
+                Map.entry("tilleggsinformasjonKandidattype",
                         tillegg.map(Tilleggsinformasjon::getKandidattype).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonkontraktsnummer",
+                Map.entry("tilleggsinformasjonKontraktsnummer",
                         tillegg.map(Tilleggsinformasjon::getKontraktsnummer).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonkontraktspartEpost",
+                Map.entry("tilleggsinformasjonKontraktspartEpost",
                         tillegg.map(Tilleggsinformasjon::getKontraktspartEpost).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonkontraktspartkode",
+                Map.entry("tilleggsinformasjonKontraktspartkode",
                         tillegg.map(Tilleggsinformasjon::getKontraktspartkode).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonkontraktspartnavn",
+                Map.entry("tilleggsinformasjonKontraktspartnavn",
                         tillegg.map(Tilleggsinformasjon::getKontraktspartnavn).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonkontraktspartnummer",
+                Map.entry("tilleggsinformasjonKontraktspartnummer",
                         tillegg.map(Tilleggsinformasjon::getKontraktspartnummer).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonkontraktstype",
+                Map.entry("tilleggsinformasjonKontraktstype",
                         tillegg.map(Tilleggsinformasjon::getKontraktstype).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonlastetOppAv",
+                Map.entry("tilleggsinformasjonLastetOppAv",
                         tillegg.map(Tilleggsinformasjon::getLastetOppAv).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonlastetOppDato",
+                Map.entry("tilleggsinformasjonLastetOppDato",
                         tillegg.map(Tilleggsinformasjon::getLastetOppDato).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonnemndnavn",
+                Map.entry("tilleggsinformasjonNemndnavn",
                         tillegg.map(Tilleggsinformasjon::getNemndnavn).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonnemndnummer",
+                Map.entry("tilleggsinformasjonNemndnummer",
                         tillegg.map(Tilleggsinformasjon::getNemndnummer).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonoppmeldtDato",
+                Map.entry("tilleggsinformasjonOppmeldtDato",
                         tillegg.map(Tilleggsinformasjon::getOppmeldtDato).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonorganisasjonsnavn",
+                Map.entry("tilleggsinformasjonOrganisasjonsnavn",
                         tillegg.map(Tilleggsinformasjon::getOrganisasjonsnavn).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonorganisasjonsnummer",
+                Map.entry("tilleggsinformasjonOrganisasjonsnummer",
                         tillegg.map(Tilleggsinformasjon::getOrganisasjonsnummer).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonprogramomradekode",
+                Map.entry("tilleggsinformasjonProgramomradekode",
                         tillegg.map(Tilleggsinformasjon::getProgramomradekode).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonprogramomradenavn",
+                Map.entry("tilleggsinformasjonProgramomradenavn",
                         tillegg.map(Tilleggsinformasjon::getProgramomradenavn).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonprovenr",
+                Map.entry("tilleggsinformasjonProvenr",
                         tillegg.map(Tilleggsinformasjon::getProvenr).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonprovestatus",
+                Map.entry("tilleggsinformasjonProvestatus",
                         tillegg.map(Tilleggsinformasjon::getProvestatus).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonprovetype",
+                Map.entry("tilleggsinformasjonProvetype",
                         tillegg.map(Tilleggsinformasjon::getProvetype).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonresultatPraktisk",
+                Map.entry("tilleggsinformasjonResultatPraktisk",
                         tillegg.map(Tilleggsinformasjon::getResultatPraktisk).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonresultatTeori",
+                Map.entry("tilleggsinformasjonResultatTeori",
                         tillegg.map(Tilleggsinformasjon::getResultatTeori).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonsokertype",
+                Map.entry("tilleggsinformasjonSokertype",
                         tillegg.map(Tilleggsinformasjon::getSokertype).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonvedleggBeskrivelse",
+                Map.entry("tilleggsinformasjonVedleggBeskrivelse",
                         tillegg.map(Tilleggsinformasjon::getVedleggBeskrivelse).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonvedleggTittel",
+                Map.entry("tilleggsinformasjonVedleggTittel",
                         tillegg.map(Tilleggsinformasjon::getVedleggTittel).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonvedtaksresultat",
+                Map.entry("tilleggsinformasjonVedtaksresultat",
                         tillegg.map(Tilleggsinformasjon::getVedtaksresultat).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonfnr",
+                Map.entry("tilleggsinformasjonFnr",
                         tillegg.map(Tilleggsinformasjon::getFnr).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonvgdoknr",
+                Map.entry("tilleggsinformasjonVgdoknr",
                         tillegg.map(Tilleggsinformasjon::getVgdoknr).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonvgdoktype",
+                Map.entry("tilleggsinformasjonVgdoktype",
                         tillegg.map(Tilleggsinformasjon::getVgdoktype).orElse(EMPTY_STRING)),
-                Map.entry("tilleggsinformasjonutsendtDato",
+                Map.entry("tilleggsinformasjonUtsendtDato",
                         tillegg.map(Tilleggsinformasjon::getUtsendtDato).orElse(EMPTY_STRING))
         );
     }
 
     // 20242025 -> 2024/2025
     private static String formatedSkoleaar(String skolear) {
-        int length = skolear.length();
-        if (length == 8) {
+        if (skolear.length() == 8) {
             return skolear.substring(0, 4) + "/" + skolear.substring(4);
         } else {
             log.warn("Not posible to format skoleaar: {}", skolear);
@@ -239,9 +237,10 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
 
     private static String formatedDate(String fodselsdato, String format) {
         try {
-            LocalDate date = LocalDate.parse(fodselsdato, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            String formattedDate = date.format(DateTimeFormatter.ofPattern(format));
-            return formattedDate;
+            return LocalDate
+                    .parse(fodselsdato, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                    .format(DateTimeFormatter.ofPattern(format));
+
         } catch (DateTimeParseException e) {
             return null;
         }
