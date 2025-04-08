@@ -2,7 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.18'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
-    id 'com.github.ben-manes.versions' version '0.51.0'
+    id 'com.github.ben-manes.versions' version '0.52.0'
 }
 
 group = 'no.fintlabs'
@@ -45,7 +45,7 @@ dependencies {
     implementation 'no.fintlabs:fint-flyt-kafka:3.1.1'
 
     implementation 'no.fintlabs:fint-flyt-instance-gateway:6.0.0'
-    implementation 'no.fintlabs:fint-flyt-resource-server:5.0.0'
+    implementation 'no.fintlabs:fint-flyt-resource-server:5.0.2'
 
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
