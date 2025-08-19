@@ -29,6 +29,7 @@ on:
           - agderfk-no
           - mrfylke-no
           - vestfoldfylke-no
+          - nfk-no
 
 env:
   REGISTRY: ghcr.io
