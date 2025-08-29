@@ -52,7 +52,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        org: [ fintlabs-no, ofk-no, tromsfylke-no, bfk-no, afk-no, vlfk-no, rogfk-no, innlandetfylke-no, agderfk-no, mrfylke-no, vestfoldfylke-no ]
+        org: [ fintlabs-no, ofk-no, tromsfylke-no, bfk-no, afk-no, vlfk-no, rogfk-no, innlandetfylke-no, agderfk-no, mrfylke-no, vestfoldfylke-no, nfk-no ]
         cluster: [ aks-beta-fint-2021-11-23, aks-api-fint-2022-02-08 ]
         include:
           - cluster: aks-beta-fint-2021-11-23
@@ -64,6 +64,8 @@ jobs:
             org: fintlabs-no
           - cluster: aks-beta-fint-2021-11-23
             org: mrfylke-no
+          - cluster: aks-beta-fint-2021-11-23
+            org: nfk-no
 
     steps:
       - uses: actions/checkout@v4
@@ -101,7 +103,7 @@ jobs:
 
       - name: Deploy to Kubernetes
         if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch) || matrix.deploy-every-branch == true
-        uses: azure/k8s-deploy@v5
+        uses: azure/k8s-deploy@v5.0.3
         with:
           action: deploy
           manifests: ${{ steps.bake.outputs.manifestsBundle }}
