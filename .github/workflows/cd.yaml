@@ -52,11 +52,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        org: [ fintlabs-no, ofk-no, tromsfylke-no, bfk-no, afk-no, vlfk-no, rogfk-no, innlandetfylke-no, agderfk-no, mrfylke-no, vestfoldfylke-no, nfk-no ]
+        org: [ fintlabs-no, ofk-no, tromsfylke-no, bfk-no, afk-no, vlfk-no, rogfk-no, innlandetfylke-no, agderfk-no, mrfylke-no, vestfoldfylke-no, nfk-no, trondelagfylke-no ]
         cluster: [ aks-beta-fint-2021-11-23, aks-api-fint-2022-02-08 ]
         include:
           - cluster: aks-beta-fint-2021-11-23
-            org: tromsfylke-no
+            org: trondelagfylke-no
             deploy-every-branch: true
 
         exclude:
