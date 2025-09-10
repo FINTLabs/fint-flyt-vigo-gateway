@@ -62,8 +62,6 @@ jobs:
         exclude:
           - cluster: aks-api-fint-2022-02-08
             org: fintlabs-no
-          - cluster: aks-api-fint-2022-02-08
-            org: trondelagfylke-no
           - cluster: aks-beta-fint-2021-11-23
             org: mrfylke-no
           - cluster: aks-beta-fint-2021-11-23
