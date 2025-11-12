@@ -31,6 +31,7 @@ on:
           - vestfoldfylke-no
           - nfk-no
           - trondelagfylke-no
+          - ffk-no
 
 env:
   REGISTRY: ghcr.io
