@@ -47,6 +47,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
 
         entries.addAll(createPersonalia(incomingInstance));
         entries.addAll(createInntaksadresse(incomingInstance));
+        entries.addAll(createPostadresse(incomingInstance));
         entries.addAll(createKontaktinformasjon(incomingInstance));
         entries.addAll(createTilleggsinformasjon(incomingInstance));
 
@@ -103,6 +104,20 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                         .orElse(EMPTY_STRING)
         ));
 
+        entries.add(Map.entry("tilpassetSendtdato1",
+                Optional.ofNullable(incomingInstance.getTilleggsinformasjon())
+                        .map(Tilleggsinformasjon::getSendtDato)
+                        .map(sendtdato -> formatedDate(sendtdato, "dd.MM.yyyy"))
+                        .orElse(EMPTY_STRING)
+        ));
+
+        entries.add(Map.entry("tilpassetSendtdato2",
+                Optional.ofNullable(incomingInstance.getTilleggsinformasjon())
+                        .map(Tilleggsinformasjon::getSendtDato)
+                        .map(sendtdato -> formatedDate(sendtdato, "ddMMyy"))
+                        .orElse(EMPTY_STRING)
+        ));
+
         return entries.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
@@ -142,7 +157,18 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                 Map.entry("inntaksadressePoststed",
                         inntaksadresse.map(Inntaksadresse::getPoststed).orElse(EMPTY_STRING))
         );
+    }
 
+    private static Collection<? extends Map.Entry<String, String>> createPostadresse(IncomingInstance incomingInstance) {
+        Optional<Postadresse> postadresse = Optional.ofNullable(incomingInstance.getPostadresse());
+        return List.of(
+                Map.entry("postadresseGateadresse",
+                        postadresse.map(Postadresse::getGateadresse).orElse(EMPTY_STRING)),
+                Map.entry("postadressePostnummer",
+                        postadresse.map(Postadresse::getPostnummer).orElse(EMPTY_STRING)),
+                Map.entry("postadressePoststed",
+                        postadresse.map(Postadresse::getPoststed).orElse(EMPTY_STRING))
+        );
     }
 
     private static Collection<? extends Map.Entry<String, String>> createTilleggsinformasjon(IncomingInstance incomingInstance) {
@@ -221,7 +247,11 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                 Map.entry("tilleggsinformasjonVgdoktype",
                         tillegg.map(Tilleggsinformasjon::getVgdoktype).orElse(EMPTY_STRING)),
                 Map.entry("tilleggsinformasjonUtsendtDato",
-                        tillegg.map(Tilleggsinformasjon::getUtsendtDato).orElse(EMPTY_STRING))
+                        tillegg.map(Tilleggsinformasjon::getUtsendtDato).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonArstall",
+                        tillegg.map(Tilleggsinformasjon::getArstall).orElse(EMPTY_STRING)),
+                Map.entry("tilleggsinformasjonSendtDato",
+                        tillegg.map(Tilleggsinformasjon::getSendtDato).orElse(EMPTY_STRING))
         );
     }
 
@@ -235,10 +265,10 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
         }
     }
 
-    private static String formatedDate(String fodselsdato, String format) {
+    private static String formatedDate(String date, String format) {
         try {
             return LocalDate
-                    .parse(fodselsdato, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                    .parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                     .format(DateTimeFormatter.ofPattern(format));
 
         } catch (DateTimeParseException e) {

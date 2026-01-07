@@ -47,4 +47,8 @@ public class Tilleggsinformasjon {
     private String vgdoknr;
     private String vgdoktype;
     private String utsendtDato;
+
+    // AR_SVAR fields
+    private String arstall;
+    private String sendtDato;
 }

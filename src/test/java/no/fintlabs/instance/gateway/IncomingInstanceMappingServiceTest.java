@@ -209,7 +209,7 @@ class IncomingInstanceMappingServiceTest {
     }
 
     @Test
-    void shouldCreateCustomizedFullNameWitoutMiddleName() {
+    void shouldCreateCustomizedFullNameWithoutMiddleName() {
         InstanceObject result = incomingInstanceMappingService
                 .map(4L, createIncomingInstance()
                                 .personalia(Personalia.builder()
@@ -293,6 +293,37 @@ class IncomingInstanceMappingServiceTest {
                 ).block();
 
         assertFalse(result.getValuePerKey().containsKey("instansId"));
+    }
+
+    @Test
+    void shouldReturnInstanceObjectWithARInfoWhenIncomingInstanceIsValid() {
+        InstanceObject result = incomingInstanceMappingService
+                .map(
+                        4L,
+                        createValidIncomingInstanceWithCompleteARSvar(),
+                        persistFile
+                ).block();
+
+        Map<String, String> valuePerKey = result.getValuePerKey();
+        assertEquals("12345678901", valuePerKey.get("personaliaFodselsnummer"));
+        assertEquals("1970-01-01", valuePerKey.get("personaliaFodselsdato"));
+        assertEquals("Edderkopp", valuePerKey.get("personaliaEtternavn"));
+        assertEquals("Bjørnstjerne Bjørnsons plass 1", valuePerKey.get("postadresseGateadresse"));
+        assertEquals("0340", valuePerKey.get("postadressePostnummer"));
+        assertEquals("Oslo", valuePerKey.get("postadressePoststed"));
+        assertEquals("974760673", valuePerKey.get("tilleggsinformasjonOrganisasjonsnummer"));
+        assertEquals("Rimelig Kul Tiger AS", valuePerKey.get("tilleggsinformasjonOrganisasjonsnavn"));
+        assertEquals("2025", valuePerKey.get("tilleggsinformasjonArstall"));
+        assertEquals("2026-01-01", valuePerKey.get("tilleggsinformasjonSendtDato"));
+
+        assertEquals("", valuePerKey.get("inntaksadresseGateadresse"));
+        assertEquals("", valuePerKey.get("inntaksadressePostnummer"));
+        assertEquals("", valuePerKey.get("inntaksadressePoststed"));
+
+        assertEquals("Svar på årlig rapportering", valuePerKey.get("dokumentTittel"));
+
+        assertEquals("01.01.2026", valuePerKey.get("tilpassetSendtdato1"));
+        assertEquals("010126", valuePerKey.get("tilpassetSendtdato2"));
     }
 
     private IncomingInstance.IncomingInstanceBuilder createIncomingInstance() {
@@ -405,6 +436,46 @@ class IncomingInstanceMappingServiceTest {
                         .filnavn("dokument.pdf")
                         .format("text/plain")
                         .build());
+    }
+
+    private IncomingInstance createValidIncomingInstanceWithCompleteARSvar() {
+        return IncomingInstance.builder()
+                .instansId("AR_SVAR-1337")
+                .dokumenttype("AR_SVAR")
+                .personalia(Personalia.builder()
+                        .fodselsnummer("12345678901")
+                        .fornavn("Lille")
+                        .mellomnavn("Petter")
+                        .etternavn("Edderkopp")
+                        .fodselsdato("1970-01-01")
+                        .build())
+
+                .kontaktinformasjon(Kontaktinformasjon.builder()
+                        .telefonnummer("12345678")
+                        .epostadresse("post@novari.no")
+                        .build())
+
+                .postadresse(Postadresse.builder()
+                        .gateadresse("Bjørnstjerne Bjørnsons plass 1")
+                        .postnummer("0340")
+                        .poststed("Oslo")
+                        .build())
+
+                .dokument(Dokument.builder()
+                        .tittel("Svar på årlig rapportering")
+                        .dato("2026-01-01")
+                        .filnavn("dokument.pdf")
+                        .format("text/plain")
+                        .build())
+
+                .tilleggsinformasjon(Tilleggsinformasjon.builder()
+                        .organisasjonsnummer("974760673")
+                        .organisasjonsnavn("Rimelig Kul Tiger AS")
+                        .programomradekode("IMIUV3----")
+                        .arstall("2025")
+                        .sendtDato("2026-01-01")
+                        .build())
+                .build();
     }
 
     private IncomingInstance.IncomingInstanceBuilder createIncomingInstanceWithoutDocument() {
