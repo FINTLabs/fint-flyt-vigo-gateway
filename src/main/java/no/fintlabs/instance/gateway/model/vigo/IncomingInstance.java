@@ -20,6 +20,7 @@ public class IncomingInstance {
     private final Personalia personalia;
     private final Kontaktinformasjon kontaktinformasjon;
     private final Inntaksadresse inntaksadresse;
+    private final Postadresse postadresse;
     private final Dokument dokument;
     private final Tilleggsinformasjon tilleggsinformasjon;
 }

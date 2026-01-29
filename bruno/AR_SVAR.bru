@@ -1,0 +1,108 @@
+meta {
+  name: AR_SVAR
+  type: http
+  seq: 18
+}
+
+post {
+  url: https://flyt.vigoiks.no/{{env}}{{org}}/api/intern/metadata
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "sourceApplicationId": 4,
+    "sourceApplicationIntegrationId": "AR_SVAR",
+    "sourceApplicationIntegrationUri": null,
+    "integrationDisplayName": "Årlig rapportering",
+    "version": "{{next-version}}",
+    "instanceMetadata": {
+      "instanceValueMetadata": [],
+      "instanceObjectCollectionMetadata": [],
+      "categories": [
+        {
+          "displayName": "Personalia",
+          "content": {
+            "instanceValueMetadata": [
+              { "displayName": "Fødselsnummer", "key": "personaliaFodselsnummer", "type": "STRING" },
+              { "displayName": "Fornavn", "key": "personaliaFornavn", "type": "STRING" },
+              { "displayName": "Mellomnavn", "key": "personaliaMellomnavn", "type": "STRING" },
+              { "displayName": "Etternavn", "key": "personaliaEtternavn", "type": "STRING" },
+              { "displayName": "Fødselsdato", "key": "personaliaFodselsdato", "type": "STRING" }
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        },
+        {
+          "displayName": "Kontaktinformasjon",
+          "content": {
+            "instanceValueMetadata": [
+              { "displayName": "Telefonnummer", "key": "kontaktinformasjonTelefonnummer", "type": "STRING" },
+              { "displayName": "Epostadresse", "key": "kontaktinformasjonEpostadresse", "type": "STRING" }
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        },
+        {
+          "displayName": "Postadresse",
+          "content": {
+            "instanceValueMetadata": [
+              { "displayName": "Gateadresse", "key": "postadresseGateadresse", "type": "STRING" },
+              { "displayName": "Postnummer", "key": "postadressePostnummer", "type": "STRING" },
+              { "displayName": "Poststed", "key": "postadressePoststed", "type": "STRING" }
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        },
+        {
+          "displayName": "Dokument",
+          "content": {
+            "instanceValueMetadata": [
+              { "displayName": "Tittel", "key": "dokumentTittel", "type": "STRING" },
+              { "displayName": "Dato", "key": "dokumentDato", "type": "STRING" },
+              { "displayName": "Filnavn", "key": "dokumentFilnavn", "type": "STRING" },
+              { "displayName": "Fil", "key": "dokumentFil", "type": "FILE" },
+              { "displayName": "Format", "key": "dokumentFormat", "type": "STRING" }
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        },
+        {
+          "displayName": "Tilleggsinformasjon",
+          "content": {
+            "instanceValueMetadata": [
+              { "displayName": "Organisasjonsnummer", "key": "tilleggsinformasjonOrganisasjonsnummer", "type": "STRING" },
+              { "displayName": "Organisasjonsnavn", "key": "tilleggsinformasjonOrganisasjonsnavn", "type": "STRING" },
+              { "displayName": "Programområdekode", "key": "tilleggsinformasjonProgramomradekode", "type": "STRING" },
+              { "displayName": "Årstall", "key": "tilleggsinformasjonÅrstall", "type": "STRING" },
+              { "displayName": "SendtDato", "key": "tilleggsinformasjonSendtDato", "type": "STRING" }
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        },
+        {
+          "displayName": "Tilpasset",
+          "content": {
+            "instanceValueMetadata": [
+              { "displayName": "Navn (fornavn mellomnavn etternavn)", "type": "STRING", "key": "tilpassetNavn1" },
+              { "displayName": "Navn (etternavn fornavn mellomnavn)", "type": "STRING", "key": "tilpassetNavn2" },
+              { "displayName": "Navn (etternavn, fornavn mellomnavn)", "type": "STRING", "key": "tilpassetNavn3" },
+              { "displayName": "Fødselsdato (ddMMyy)", "type": "STRING", "key": "tilpassetFodselsdato1" },
+              { "displayName": "Fødselsdato (dd.MM.yyyy)", "type": "STRING", "key": "tilpassetFodselsdato2" },
+              { "displayName": "SendtDato (dd.MM.yyyy)", "type": "STRING", "key": "tilpassetSendtdato1" },
+              { "displayName": "SendtDato (ddMMyy)", "type": "STRING", "key": "tilpassetSendtdato2" }
+            ],
+            "instanceObjectCollectionMetadata": [],
+            "categories": []
+          }
+        }
+      ]
+    }
+  }
+}
