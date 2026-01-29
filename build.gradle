@@ -46,11 +46,12 @@ dependencies {
 
     implementation 'org.hibernate.validator:hibernate-validator'
 
-    implementation 'no.fintlabs:fint-kafka:4.0.3'
-    implementation 'no.fintlabs:fint-flyt-kafka:3.1.2'
+    //implementation 'no.fintlabs:fint-kafka:4.0.3'
+    //implementation 'no.fintlabs:fint-flyt-kafka:3.1.2'
 
-    implementation 'no.novari:flyt-instance-gateway:7.0.1'
-    implementation 'no.novari:flyt-resource-server:6.1.0'
+    implementation 'no.novari:flyt-kafka:5.0.0'
+    implementation 'no.novari:flyt-instance-gateway:7.1.0'
+    implementation 'no.novari:flyt-resource-server:6.0.0'
 
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
