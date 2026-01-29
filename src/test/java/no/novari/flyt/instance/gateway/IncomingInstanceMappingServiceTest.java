@@ -1,6 +1,6 @@
-package no.fintlabs.instance.gateway;
+package no.novari.flyt.instance.gateway;
 
-import no.fintlabs.instance.gateway.model.vigo.*;
+import no.novari.flyt.instance.gateway.model.vigo.*;
 import no.novari.flyt.instance.gateway.model.File;
 import no.novari.flyt.instance.gateway.model.InstanceObject;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,9 +1,8 @@
-package no.fintlabs.instance.gateway;
+package no.novari.flyt.instance.gateway;
 
 import lombok.extern.slf4j.Slf4j;
-import no.fintlabs.instance.gateway.model.Status;
-import no.fintlabs.instance.gateway.model.vigo.IncomingInstance;
-import no.novari.flyt.instance.gateway.InstanceProcessor;
+import no.novari.flyt.instance.gateway.model.Status;
+import no.novari.flyt.instance.gateway.model.vigo.IncomingInstance;
 import no.novari.flyt.instance.gateway.kafka.ArchiveCaseIdRequestService;
 import no.novari.flyt.resourceserver.security.client.sourceapplication.SourceApplicationAuthorizationService;
 import org.springframework.http.ResponseEntity;
