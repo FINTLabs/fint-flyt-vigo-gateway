@@ -1,8 +1,8 @@
 package no.fintlabs.instance.gateway;
 
-import no.fintlabs.gateway.instance.InstanceProcessor;
-import no.fintlabs.gateway.instance.InstanceProcessorFactoryService;
 import no.fintlabs.instance.gateway.model.vigo.IncomingInstance;
+import no.novari.flyt.instance.gateway.InstanceProcessor;
+import no.novari.flyt.instance.gateway.InstanceProcessorFactoryService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

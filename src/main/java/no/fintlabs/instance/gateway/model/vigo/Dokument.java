@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
-import no.fintlabs.gateway.instance.validation.constraints.ValidBase64;
+import no.novari.flyt.instance.gateway.validation.constraints.ValidBase64;
 
 @Getter
 @Jacksonized

@@ -1,11 +1,10 @@
 package no.fintlabs.instance.gateway.model.vigo;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
-
-import javax.validation.constraints.NotNull;
 
 
 @Getter
