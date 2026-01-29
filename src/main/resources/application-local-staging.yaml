@@ -1,5 +1,6 @@
 fint:
   org-id: fintlabs.no
+novari:
   flyt:
     file-service-url: http://localhost:8091
     resource-server:

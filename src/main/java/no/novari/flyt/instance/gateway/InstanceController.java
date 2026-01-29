@@ -1,18 +1,18 @@
-package no.fintlabs.instance.gateway;
+package no.novari.flyt.instance.gateway;
 
 import lombok.extern.slf4j.Slf4j;
-import no.fintlabs.gateway.instance.InstanceProcessor;
-import no.fintlabs.gateway.instance.kafka.ArchiveCaseIdRequestService;
-import no.fintlabs.instance.gateway.model.Status;
-import no.fintlabs.instance.gateway.model.vigo.IncomingInstance;
-import no.fintlabs.resourceserver.security.client.sourceapplication.SourceApplicationAuthorizationService;
+import no.novari.flyt.instance.gateway.model.Status;
+import no.novari.flyt.instance.gateway.model.vigo.IncomingInstance;
+import no.novari.flyt.instance.gateway.kafka.ArchiveCaseIdRequestService;
+import no.novari.flyt.resourceserver.security.client.sourceapplication.SourceApplicationAuthorizationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
-import static no.fintlabs.resourceserver.UrlPaths.EXTERNAL_API;
+import static no.novari.flyt.resourceserver.UrlPaths.EXTERNAL_API;
+
 
 @Slf4j
 @RestController
