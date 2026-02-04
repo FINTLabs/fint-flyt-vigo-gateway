@@ -1,5 +1,5 @@
 fint:
-  org-id: fintlabs.no
+  org-id: novari.no
 novari:
   flyt:
     file-service-url: http://localhost:8091
@@ -13,6 +13,8 @@ novari:
       check-integration-exists: false
   kafka:
     default-replicas: 1
+    topic:
+      org-id: novari-no
 spring:
   kafka:
     bootstrap-servers: localhost:9092
