@@ -1,9 +1,9 @@
 package no.novari.flyt.instance.gateway;
 
 import lombok.extern.slf4j.Slf4j;
+import no.novari.flyt.instance.gateway.kafka.ArchiveCaseIdRequestService;
 import no.novari.flyt.instance.gateway.model.Status;
 import no.novari.flyt.instance.gateway.model.vigo.IncomingInstance;
-import no.novari.flyt.instance.gateway.kafka.ArchiveCaseIdRequestService;
 import no.novari.flyt.resourceserver.security.client.sourceapplication.SourceApplicationAuthorizationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -20,9 +20,7 @@ import static no.novari.flyt.resourceserver.UrlPaths.EXTERNAL_API;
 public class InstanceController {
 
     private final InstanceProcessor<IncomingInstance> instanceProcessor;
-
     private final ArchiveCaseIdRequestService archiveCaseIdRequestService;
-
     private final SourceApplicationAuthorizationService sourceApplicationAuthorizationService;
 
     public InstanceController(
