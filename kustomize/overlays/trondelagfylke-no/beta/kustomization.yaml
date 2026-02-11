@@ -37,9 +37,9 @@ patches:
         value: "/beta/trondelagfylke-no/actuator/prometheus"
       - op: add
         path: "/spec/env/-"
-          value:
-            name: novari.kafka.topic.org-id
-            value: "trondelagfylke-no"
+        value:
+          name: novari.kafka.topic.org-id
+          value: "trondelagfylke-no"
     target:
       kind: Application
       name: fint-flyt-vigo-gateway
