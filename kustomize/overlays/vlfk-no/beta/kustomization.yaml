@@ -35,6 +35,11 @@ patches:
       - op: replace
         path: "/spec/observability/metrics/path"
         value: "/beta/vlfk-no/actuator/prometheus"
+      - op: add
+        path: "/spec/env/-"
+          value:
+            name: novari.kafka.topic.org-id
+            value: "vlfk-no"
     target:
       kind: Application
       name: fint-flyt-vigo-gateway
