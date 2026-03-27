@@ -15,7 +15,7 @@ spec:
   port: 8080
   imagePullPolicy: Always
   orgId: novari.no
-  image: ghcr.io/novari/fint-flyt-vigo-gateway:sha-0000000
+  image: ghcr.io/fintlabs/fint-flyt-vigo-gateway:sha-0000000
   kafka:
     enabled: true
     acls:
