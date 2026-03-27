@@ -1,13 +1,13 @@
 # FINT FLYT VIGO Gateway
 
-## Overview
-These lines of beautiful software craftsmanship create a specific gateway in FINT Flyt, namely the VIGO Gateway.
-Its primary function is to handle POST requests containing data, which is then processed and published to other
-microservices through Kafka inside the FINT Flyt infrastructure. Enjoy!
+VIGO-specific FINT Flyt gateway. The service receives incoming instances, maps them to Flyt instance objects, uploads files, and publishes the result into the Flyt flow.
 
-## Getting Started
-Feel free to read our original self help book in the template repo;
-https://github.com/FINTLabs/fint-flyt-instance-gateway-template (or call a friend).
+## Local development
+
+- Java 21
+- Gradle 9.1 wrapper
+- `./gradlew build`
+- `docker build .`
 
 ## Set up metadata with Bruno
 

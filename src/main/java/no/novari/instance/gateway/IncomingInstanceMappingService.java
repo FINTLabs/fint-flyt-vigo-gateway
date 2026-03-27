@@ -1,10 +1,10 @@
-package no.fintlabs.instance.gateway;
+package no.novari.instance.gateway;
 
 import lombok.extern.slf4j.Slf4j;
-import no.fintlabs.gateway.instance.InstanceMapper;
-import no.fintlabs.gateway.instance.model.File;
-import no.fintlabs.gateway.instance.model.instance.InstanceObject;
-import no.fintlabs.instance.gateway.model.vigo.*;
+import no.novari.flyt.instance.gateway.InstanceMapper;
+import no.novari.flyt.instance.gateway.model.File;
+import no.novari.flyt.instance.gateway.model.InstanceObject;
+import no.novari.instance.gateway.model.vigo.*;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -289,6 +289,7 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
                         .sourceApplicationInstanceId(incomingInstance.getInstansId())
                         .encoding("UTF-8")
                         .base64Contents(incomingInstance.getDokument().getFil())
-                        .build());
+                        .build()
+        );
     }
 }

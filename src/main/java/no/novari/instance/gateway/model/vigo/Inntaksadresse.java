@@ -1,4 +1,4 @@
-package no.fintlabs.instance.gateway.model.vigo;
+package no.novari.instance.gateway.model.vigo;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -9,7 +9,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @EqualsAndHashCode
 @Builder
-public class Postadresse {
+public class Inntaksadresse {
 
     private String gateadresse;
     private String postnummer;

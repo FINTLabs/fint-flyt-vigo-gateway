@@ -1,5 +1,7 @@
 fint:
-  org-id: fintlabs.no
+  org-id: novari.no
+
+novari:
   flyt:
     file-service-url: http://localhost:8091
     resource-server:
@@ -7,11 +9,13 @@ fint:
         api:
           external:
             enabled: true
-            authorized-client-ids: 4
+            authorized-source-application-ids: 4
     instance-gateway:
       check-integration-exists: false
   kafka:
     default-replicas: 1
+    topic:
+      org-id: novari-no
 spring:
   kafka:
     bootstrap-servers: localhost:9092
@@ -19,4 +23,4 @@ server:
   port: 8104
 logging:
   level:
-    no.fintlabs.sourceapplicationInstanceController: DEBUG
+    reactor.netty.http.client: DEBUG

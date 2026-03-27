@@ -1,41 +1,40 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: fintlabs-no
+namespace: novari-no
 
 resources:
   - ../../../base
 
 labels:
   - pairs:
-      app.kubernetes.io/instance: fint-flyt-vigo-gateway_fintlabs_no
-      fintlabs.no/org-id: fintlabs.no
+      app.kubernetes.io/instance: fint-flyt-vigo-gateway_novari_no
+      fintlabs.no/org-id: novari.no
 
 patches:
   - patch: |-
       - op: replace
         path: "/spec/kafka/acls/0/topic"
-        value: "fintlabs-no.flyt.*"
+        value: "novari-no.flyt.*"
       - op: replace
         path: "/spec/orgId"
-        value: "fintlabs.no"
+        value: "novari.no"
       - op: add
         path: "/spec/url/basePath"
-        value: "/beta/fintlabs-no"
+        value: "/beta/novari-no"
       - op: replace
         path: "/spec/ingress/basePath"
-        value: "/beta/fintlabs-no/api/vigo"
+        value: "/beta/novari-no/api/vigo"
       - op: add
         path: "/spec/env/-"
         value:
-          name: "logging.level.no.fintlabs.instance.gateway"
+          name: "logging.level.no.novari.instance.gateway"
           value: "DEBUG"
       - op: replace
         path: "/spec/probes/readiness/path"
-        value: "/beta/fintlabs-no/actuator/health"
+        value: "/beta/novari-no/actuator/health"
       - op: replace
         path: "/spec/observability/metrics/path"
-        value: "/beta/fintlabs-no/actuator/prometheus"
+        value: "/beta/novari-no/actuator/prometheus"
     target:
       kind: Application
       name: fint-flyt-vigo-gateway
-
