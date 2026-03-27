@@ -21,7 +21,6 @@ on:
           - bfk-no
           - ffk-no
           - fintlabs-no
-          - novari-no
           - innlandetfylke-no
           - mrfylke-no
           - nfk-no
@@ -81,8 +80,6 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: type=sha,enable=true,priority=100,prefix=sha-,suffix=,format=short
-      - name: Set application image
-        run: sed -i.bak "s#^[[:space:]]*image: .*#  image: ${{ steps.meta.outputs.tags }}#" kustomize/base/flais.yaml
       - uses: docker/build-push-action@v6
         with:
           context: .
@@ -111,4 +108,5 @@ jobs:
         with:
           action: deploy
           manifests: ${{ steps.bake.outputs.manifestsBundle }}
+          images: ${{ steps.meta.outputs.tags }}
           namespace: ${{ env.ORG }}
