@@ -22,15 +22,18 @@ public class InstanceController {
     private final InstanceProcessor<IncomingInstance> instanceProcessor;
     private final ArchiveCaseIdRequestService archiveCaseIdRequestService;
     private final SourceApplicationAuthorizationService sourceApplicationAuthorizationService;
+    private final Observability observability;
 
     public InstanceController(
             InstanceProcessor<IncomingInstance> instanceProcessor,
             ArchiveCaseIdRequestService archiveCaseIdRequestService,
-            SourceApplicationAuthorizationService sourceApplicationAuthorizationService
+            SourceApplicationAuthorizationService sourceApplicationAuthorizationService,
+            Observability observability
     ) {
         this.instanceProcessor = instanceProcessor;
         this.archiveCaseIdRequestService = archiveCaseIdRequestService;
         this.sourceApplicationAuthorizationService = sourceApplicationAuthorizationService;
+        this.observability = observability;
     }
 
     @PostMapping("instance")
@@ -39,6 +42,8 @@ public class InstanceController {
             @AuthenticationPrincipal Mono<Authentication> authenticationMono
     ) {
         log.debug("Incoming instance: {}", incomingInstance.getInstansId());
+
+        observability.incrementVigoDocumentCounters(incomingInstance.getDokumenttype());
 
         return authenticationMono.flatMap(
                 authentication -> instanceProcessor.processInstance(
