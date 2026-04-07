@@ -48,14 +48,14 @@ spec:
     readiness:
       path: /actuator/health/readiness
       port: 8080
-      initialDelaySeconds: 0
+      initialDelaySeconds: 42
       failureThreshold: 5
       periodSeconds: 10
       timeoutSeconds: 3
     liveness:
       path: /actuator/health/liveness
       port: 8080
-      initialDelaySeconds: 0
+      initialDelaySeconds: 42
       failureThreshold: 5
       periodSeconds: 10
       timeoutSeconds: 3
