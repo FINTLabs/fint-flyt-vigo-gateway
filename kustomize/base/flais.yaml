@@ -64,8 +64,8 @@ spec:
       enabled: true
       port: "8080"
       path: /actuator/prometheus
-      logging:
-        loki: true
+    logging:
+      loki: true
   restartPolicy: Always
   replicas: 1
   strategy:
