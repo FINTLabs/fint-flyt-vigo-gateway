@@ -8,14 +8,15 @@ fint:
       retentionTimeInDays: 30
 logging:
   level:
-    no.fintlabs.cache.ehcache.FintEhCacheEventLogger: WARN
+    no.novari.cache.ehcache.FintEhCacheEventLogger: WARN
 server:
   error:
     include-message: always
   max-http-request-header-size: 40KB
 spring:
-  codec:
-    max-in-memory-size: 500MB
+  http:
+    codecs:
+      max-in-memory-size: 500MB
   profiles:
     include:
       - flyt-kafka

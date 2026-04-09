@@ -2,19 +2,19 @@ apiVersion: fintlabs.no/v1alpha1
 kind: Application
 metadata:
   name: fint-flyt-vigo-gateway
-  namespace: fintlabs-no
+  namespace: novari-no
   labels:
     app.kubernetes.io/name: fint-flyt-vigo-gateway
-    app.kubernetes.io/instance: fint-flyt-vigo-gateway_fintlabs_no
+    app.kubernetes.io/instance: fint-flyt-vigo-gateway_novari_no
     app.kubernetes.io/version: latest
     app.kubernetes.io/component: backend
     app.kubernetes.io/part-of: fint-flyt
     fintlabs.no/team: flyt
-    fintlabs.no/org-id: fintlabs.no
+    fintlabs.no/org-id: novari.no
 spec:
   port: 8080
   imagePullPolicy: Always
-  orgId: fintlabs.no
+  orgId: novari.no
   image: ghcr.io/fintlabs/fint-flyt-vigo-gateway:sha-0000000
   kafka:
     enabled: true
@@ -46,9 +46,16 @@ spec:
       cpu: "100m"
   probes:
     readiness:
-      path: /actuator/health
+      path: /actuator/health/readiness
       port: 8080
-      initialDelaySeconds: 0
+      initialDelaySeconds: 42
+      failureThreshold: 5
+      periodSeconds: 10
+      timeoutSeconds: 3
+    liveness:
+      path: /actuator/health/liveness
+      port: 8080
+      initialDelaySeconds: 42
       failureThreshold: 5
       periodSeconds: 10
       timeoutSeconds: 3
@@ -57,6 +64,8 @@ spec:
       enabled: true
       port: "8080"
       path: /actuator/prometheus
+    logging:
+      loki: true
   restartPolicy: Always
   replicas: 1
   strategy:

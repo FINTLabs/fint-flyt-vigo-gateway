@@ -1,4 +1,4 @@
-package no.fintlabs.instance.gateway.model.vigo;
+package no.novari.flyt.instance.gateway.model.vigo;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
