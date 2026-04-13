@@ -46,7 +46,7 @@ dependencies {
 
     implementation 'no.novari:flyt-instance-gateway:7.1.0'
     implementation 'no.novari:flyt-kafka:4.0.0'
-    implementation 'no.novari:flyt-resource-server:6.0.0'
+    implementation 'no.novari:flyt-resource-server:6.1.0'
 
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
