@@ -16,7 +16,7 @@ server:
 spring:
   http:
     codecs:
-      max-in-memory-size: 500MB
+      max-in-memory-size: 1024MB
   profiles:
     include:
       - flyt-kafka
