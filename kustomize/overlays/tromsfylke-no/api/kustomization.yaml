@@ -43,6 +43,15 @@ patches:
         value:
           name: novari.kafka.topic.org-id
           value: "tromsfylke-no"
+      - op: replace
+        path: "/spec/resources"
+        value:
+          limits:
+            memory: "4Gi"
+            cpu: "1"
+          requests:
+            memory: "3Gi"
+            cpu: "512m"
     target:
       kind: Application
       name: fint-flyt-vigo-gateway
