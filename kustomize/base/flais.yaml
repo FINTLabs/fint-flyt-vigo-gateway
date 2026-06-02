@@ -29,7 +29,7 @@ spec:
     basePath: path
   env:
     - name: JAVA_TOOL_OPTIONS
-      value: '-XX:+ExitOnOutOfMemoryError -Xmx1840M'
+      value: '-XX:+ExitOnOutOfMemoryError -Xmx3Gi'
     - name: fint.flyt.resource-server.security.api.external.enabled
       value: "true"
     - name: fint.flyt.resource-server.security.api.external.authorized-client-ids

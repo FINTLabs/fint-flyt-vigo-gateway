@@ -56,7 +56,13 @@ jobs:
         cluster: [ aks-beta-fint-2021-11-23, aks-api-fint-2022-02-08 ]
         include:
           - cluster: aks-beta-fint-2021-11-23
+            deploy-every-branch: false
+          - cluster: aks-api-fint-2022-02-08
             deploy-every-branch: true
+            org: nfk-no
+          - cluster: aks-api-fint-2022-02-08
+            deploy-every-branch: true
+            org: tromsfylke-no
 
         exclude:
           - cluster: aks-beta-fint-2021-11-23
