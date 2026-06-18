@@ -1,9 +1,7 @@
-FROM gradle:9.3.0-jdk21-corretto AS builder
-USER root
-COPY . .
-RUN gradle --no-daemon build
-
-FROM gcr.io/distroless/java21
+FROM gcr.io/distroless/java25:nonroot
+ENV TZ="Europe/Oslo"
 ENV JAVA_TOOL_OPTIONS=-XX:+ExitOnOutOfMemoryError
-COPY --from=builder /home/gradle/build/libs/fint-flyt-vigo-gateway-*.jar /data/app.jar
-CMD ["/data/app.jar"]
+WORKDIR /app
+COPY build/libs/*.jar ./app.jar
+EXPOSE 8080
+CMD ["app.jar"]

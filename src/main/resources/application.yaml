@@ -1,11 +1,8 @@
 fint:
   application-id: fint-flyt-vigo-gateway
-  cache:
-    defaultCacheEntryTimeToLiveMillis: 518400000
-    defaultCacheHeapSize: 1000000
   flyt:
-    sourceapplication:
-      retentionTimeInDays: 30
+    web-instance-gateway:
+      max-request-size: 500MB
 logging:
   level:
     no.novari.cache.ehcache.FintEhCacheEventLogger: WARN
@@ -14,12 +11,13 @@ server:
     include-message: always
   max-http-request-header-size: 40KB
 spring:
-  http:
-    codecs:
-      max-in-memory-size: 1024MB
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
   profiles:
     include:
       - flyt-kafka
       - flyt-logging
-      - flyt-resource-server
+      - flyt-web-resource-server
       - flyt-file-client

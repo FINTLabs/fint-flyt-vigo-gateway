@@ -1,10 +1,10 @@
 package no.novari.flyt.instance.gateway;
 
+import no.novari.flyt.gateway.webinstance.InstanceProcessor;
+import no.novari.flyt.gateway.webinstance.InstanceProcessorFactoryService;
 import no.novari.flyt.instance.gateway.model.vigo.IncomingInstance;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Optional;
 
 @Configuration
 public class InstanceProcessorConfiguration {
@@ -15,8 +15,8 @@ public class InstanceProcessorConfiguration {
             IncomingInstanceMappingService incomingInstanceMappingService
     ) {
         return instanceProcessorFactoryService.createInstanceProcessor(
-                incomingInstance -> Optional.ofNullable(incomingInstance.getDokumenttype()),
-                incomingInstance -> Optional.ofNullable(incomingInstance.getInstansId()),
+                IncomingInstance::getDokumenttype,
+                IncomingInstance::getInstansId,
                 incomingInstanceMappingService
         );
     }
