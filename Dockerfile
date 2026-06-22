@@ -1,4 +1,4 @@
-FROM gradle:9.3.0-jdk21-corretto AS builder
+FROM gradle:jdk21 AS builder
 USER root
 COPY . .
 RUN gradle --no-daemon build
