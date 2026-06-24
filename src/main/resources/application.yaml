@@ -3,13 +3,21 @@ fint:
   flyt:
     web-instance-gateway:
       max-request-size: 500MB
+
+novari:
+  flyt:
+    web-instance-gateway:
+      max-request-size: 500MB
+
 logging:
   level:
     no.novari.cache.ehcache.FintEhCacheEventLogger: WARN
+
 server:
   error:
     include-message: always
   max-http-request-header-size: 40KB
+
 spring:
   servlet:
     multipart:
