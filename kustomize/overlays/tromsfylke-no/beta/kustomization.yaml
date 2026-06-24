@@ -35,7 +35,7 @@ patches:
         path: "/spec/env/-"
         value:
           name: "logging.level.org.springframework.security"
-          value: "DEBUG"
+          value: "INFO"
       - op: replace
         path: "/spec/probes/readiness/path"
         value: "/beta/tromsfylke-no/actuator/health/readiness"
