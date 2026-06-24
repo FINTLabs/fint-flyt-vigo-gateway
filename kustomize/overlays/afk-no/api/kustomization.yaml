@@ -20,10 +20,15 @@ patches:
         value: "afk.no"
       - op: add
         path: "/spec/url/basePath"
-        value: "/afk-no"
+        value: ""
       - op: replace
         path: "/spec/ingress/basePath"
         value: "/afk-no/api/vigo"
+      - op: add
+        path: "/spec/env/-"
+        value:
+          name: "server.servlet.context-path"
+          value: "/afk-no"
       - op: add
         path: "/spec/env/-"
         value:

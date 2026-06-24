@@ -20,10 +20,15 @@ patches:
         value: "ffk.no"
       - op: add
         path: "/spec/url/basePath"
-        value: "/beta/ffk-no"
+        value: ""
       - op: replace
         path: "/spec/ingress/basePath"
         value: "/beta/ffk-no/api/vigo"
+      - op: add
+        path: "/spec/env/-"
+        value:
+          name: "server.servlet.context-path"
+          value: "/beta/ffk-no"
       - op: add
         path: "/spec/env/-"
         value:

@@ -20,10 +20,15 @@ patches:
         value: "agderfk.no"
       - op: add
         path: "/spec/url/basePath"
-        value: "/beta/agderfk-no"
+        value: ""
       - op: replace
         path: "/spec/ingress/basePath"
         value: "/beta/agderfk-no/api/vigo"
+      - op: add
+        path: "/spec/env/-"
+        value:
+          name: "server.servlet.context-path"
+          value: "/beta/agderfk-no"
       - op: add
         path: "/spec/env/-"
         value:

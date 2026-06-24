@@ -20,10 +20,15 @@ patches:
         value: "bfk.no"
       - op: add
         path: "/spec/url/basePath"
-        value: "/bfk-no"
+        value: ""
       - op: replace
         path: "/spec/ingress/basePath"
         value: "/bfk-no/api/vigo"
+      - op: add
+        path: "/spec/env/-"
+        value:
+          name: "server.servlet.context-path"
+          value: "/bfk-no"
       - op: add
         path: "/spec/env/-"
         value:

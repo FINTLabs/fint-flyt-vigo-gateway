@@ -20,10 +20,15 @@ patches:
         value: "tromsfylke.no"
       - op: add
         path: "/spec/url/basePath"
-        value: "/tromsfylke-no"
+        value: ""
       - op: replace
         path: "/spec/ingress/basePath"
         value: "/tromsfylke-no/api/vigo"
+      - op: add
+        path: "/spec/env/-"
+        value:
+          name: "server.servlet.context-path"
+          value: "/tromsfylke-no"
       - op: add
         path: "/spec/env/-"
         value:

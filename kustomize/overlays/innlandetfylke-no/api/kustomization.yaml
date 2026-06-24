@@ -20,10 +20,15 @@ patches:
         value: "innlandetfylke.no"
       - op: add
         path: "/spec/url/basePath"
-        value: "/innlandetfylke-no"
+        value: ""
       - op: replace
         path: "/spec/ingress/basePath"
         value: "/innlandetfylke-no/api/vigo"
+      - op: add
+        path: "/spec/env/-"
+        value:
+          name: "server.servlet.context-path"
+          value: "/innlandetfylke-no"
       - op: add
         path: "/spec/env/-"
         value:

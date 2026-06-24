@@ -20,10 +20,15 @@ patches:
         value: "rogfk.no"
       - op: add
         path: "/spec/url/basePath"
-        value: "/rogfk-no"
+        value: ""
       - op: replace
         path: "/spec/ingress/basePath"
         value: "/rogfk-no/api/vigo"
+      - op: add
+        path: "/spec/env/-"
+        value:
+          name: "server.servlet.context-path"
+          value: "/rogfk-no"
       - op: add
         path: "/spec/env/-"
         value:

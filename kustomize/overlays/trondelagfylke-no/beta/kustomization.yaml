@@ -20,10 +20,15 @@ patches:
         value: "trondelagfylke.no"
       - op: add
         path: "/spec/url/basePath"
-        value: "/beta/trondelagfylke-no"
+        value: ""
       - op: replace
         path: "/spec/ingress/basePath"
         value: "/beta/trondelagfylke-no/api/vigo"
+      - op: add
+        path: "/spec/env/-"
+        value:
+          name: "server.servlet.context-path"
+          value: "/beta/trondelagfylke-no"
       - op: add
         path: "/spec/env/-"
         value:
