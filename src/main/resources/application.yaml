@@ -1,8 +1,5 @@
 fint:
   application-id: fint-flyt-vigo-gateway
-  flyt:
-    web-instance-gateway:
-      max-request-size: 500MB
 
 novari:
   flyt:
