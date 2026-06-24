@@ -38,6 +38,9 @@ patches:
         path: "/spec/probes/liveness/path"
         value: "/beta/vestfoldfylke-no/actuator/health/liveness"
       - op: replace
+        path: "/spec/probes/startup/path"
+        value: "/beta/vestfoldfylke-no/actuator/health"
+      - op: replace
         path: "/spec/observability/metrics/path"
         value: "/beta/vestfoldfylke-no/actuator/prometheus"
       - op: add
