@@ -34,6 +34,8 @@ spec:
       value: "true"
     - name: fint.flyt.resource-server.security.api.external.authorized-client-ids
       value: "4"
+    - name: novari.flyt.web-instance-gateway.max-request-size
+      value: "500MB"
   envFrom:
     - secretRef:
         name: fint-flyt-file-oauth2-client
