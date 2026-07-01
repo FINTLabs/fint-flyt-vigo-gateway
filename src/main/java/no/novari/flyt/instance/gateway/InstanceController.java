@@ -1,17 +1,16 @@
 package no.novari.flyt.instance.gateway;
 
 import lombok.extern.slf4j.Slf4j;
-import no.novari.flyt.instance.gateway.kafka.ArchiveCaseIdRequestService;
+import no.novari.flyt.gateway.webinstance.InstanceProcessor;
+import no.novari.flyt.gateway.webinstance.kafka.ArchiveCaseIdRequestService;
+import no.novari.flyt.webresourceserver.security.client.sourceapplication.SourceApplicationAuthorizationService;
 import no.novari.flyt.instance.gateway.model.Status;
 import no.novari.flyt.instance.gateway.model.vigo.IncomingInstance;
-import no.novari.flyt.resourceserver.security.client.sourceapplication.SourceApplicationAuthorizationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
 
-import static no.novari.flyt.resourceserver.UrlPaths.EXTERNAL_API;
+import static no.novari.flyt.webresourceserver.UrlPaths.EXTERNAL_API;
 
 
 @Slf4j
@@ -37,49 +36,44 @@ public class InstanceController {
     }
 
     @PostMapping("instance")
-    public Mono<ResponseEntity<?>> postIncomingInstance(
+    public ResponseEntity<Void> postIncomingInstance(
             @RequestBody IncomingInstance incomingInstance,
-            @AuthenticationPrincipal Mono<Authentication> authenticationMono
+            Authentication authentication
     ) {
         log.debug("Incoming instance: {}", incomingInstance.getInstansId());
 
         observability.incrementVigoDocumentCounters(incomingInstance.getDokumenttype());
 
-        return authenticationMono.flatMap(
-                authentication -> instanceProcessor.processInstance(
-                        authentication,
-                        incomingInstance
-                )
+        return instanceProcessor.processInstance(
+                authentication,
+                incomingInstance
         );
     }
 
     @GetMapping("status/{instanceId}")
-    public Mono<ResponseEntity<Status>> getInstanceStatus(
-            @AuthenticationPrincipal Mono<Authentication> authenticationMono,
+    public ResponseEntity<Status> getInstanceStatus(
+            Authentication authentication,
             @PathVariable String instanceId
     ) {
-        return authenticationMono.map(authentication ->
-                {
-                    Long applicationId = sourceApplicationAuthorizationService.getSourceApplicationId(authentication);
+        long applicationId = sourceApplicationAuthorizationService.getSourceApplicationId(authentication);
 
-                    log.debug("Get status for instance: {} in sourceApplication: {}", instanceId, applicationId);
+        log.debug("Get status for instance: {} in sourceApplication: {}", instanceId, applicationId);
 
-                    return archiveCaseIdRequestService.getArchiveCaseId(applicationId, instanceId)
-                            .map(caseId -> ResponseEntity.ok(Status.builder()
-                                            .instansId(instanceId)
-                                            .destinasjonsId(caseId)
-                                            .status("Instans godtatt av destinasjon").build()
-                                    )
-                            )
-                            .orElse(ResponseEntity
-                                    .badRequest()
-                                    .body(Status.builder()
-                                            .instansId(instanceId)
-                                            .status("Ukjent status").build()
-                                    )
-                            );
-                }
-        );
+        String caseId = archiveCaseIdRequestService.getArchiveCaseId(applicationId, instanceId);
+        if (caseId != null) {
+            return ResponseEntity.ok(Status.builder()
+                    .instansId(instanceId)
+                    .destinasjonsId(caseId)
+                    .status("Instans godtatt av destinasjon")
+                    .build());
+        }
+
+        return ResponseEntity
+                .badRequest()
+                .body(Status.builder()
+                        .instansId(instanceId)
+                        .status("Ukjent status")
+                        .build());
     }
 
 }

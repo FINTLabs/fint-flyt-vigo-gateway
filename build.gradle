@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '3.5.13'
+    id 'org.springframework.boot' version '3.5.15'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
     id 'com.github.ben-manes.versions' version '0.54.0'
@@ -10,11 +10,13 @@ version = '0.0.1-SNAPSHOT'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
 configurations {
+    mockitoAgent
+
     compileOnly {
         extendsFrom annotationProcessor
     }
@@ -36,26 +38,34 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-    runtimeOnly(group: 'io.netty', name: 'netty-resolver-dns-native-macos', classifier: 'osx-aarch_64')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.springframework.security:spring-security-core'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    implementation 'no.novari:flyt-instance-gateway:7.1.0'
-    implementation 'no.novari:flyt-kafka:4.0.0'
-    implementation 'no.novari:flyt-resource-server:6.0.0'
+    implementation 'no.novari:flyt-web-instance-gateway:2.0.2'
 
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'io.projectreactor:reactor-test'
+    testImplementation 'org.springframework.security:spring-security-core'
     testImplementation 'cglib:cglib-nodep:3.3.0'
+
+    mockitoAgent('org.mockito:mockito-core') {
+        transitive = false
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.fork = true
+    options.forkOptions.jvmArgs.add('--sun-misc-unsafe-memory-access=allow')
 }
 
 test {
     useJUnitPlatform()
+    jvmArgs "-javaagent:${configurations.mockitoAgent.singleFile}", '-Xshare:off'
 }

@@ -1,19 +1,20 @@
 package no.novari.flyt.instance.gateway;
 
 import lombok.extern.slf4j.Slf4j;
+import kotlin.jvm.functions.Function1;
+import no.novari.flyt.gateway.webinstance.InstanceMapper;
+import no.novari.flyt.gateway.webinstance.model.File;
+import no.novari.flyt.gateway.webinstance.model.instance.InstanceObject;
 import no.novari.flyt.instance.gateway.model.vigo.*;
-import no.novari.flyt.instance.gateway.model.File;
-import no.novari.flyt.instance.gateway.model.InstanceObject;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -23,21 +24,18 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
 
     public static final String EMPTY_STRING = "";
 
+    @NotNull
     @Override
-    public Mono<InstanceObject> map(
-            Long sourceApplicationId,
-            IncomingInstance incomingInstance,
-            Function<File, Mono<UUID>> persistFile
+    public InstanceObject map(
+            long sourceApplicationId,
+            @NotNull IncomingInstance incomingInstance,
+            @NotNull Function1<? super File, UUID> persistFile
     ) {
         if (incomingInstance.getDokument() == null) {
-            return Mono.just(InstanceObject.builder()
-                    .valuePerKey(toValuePerKey(incomingInstance, null))
-                    .build());
+            return new InstanceObject(toValuePerKey(incomingInstance, null), new HashMap<>());
         } else {
-            return postFile(sourceApplicationId, incomingInstance, persistFile)
-                    .map(uuid -> InstanceObject.builder()
-                            .valuePerKey(toValuePerKey(incomingInstance, uuid))
-                            .build());
+            UUID uuid = postFile(sourceApplicationId, incomingInstance, persistFile);
+            return new InstanceObject(toValuePerKey(incomingInstance, uuid), new HashMap<>());
         }
     }
 
@@ -275,19 +273,19 @@ public class IncomingInstanceMappingService implements InstanceMapper<IncomingIn
         }
     }
 
-    private Mono<UUID> postFile(
-            Long sourceApplicationId,
-            IncomingInstance incomingInstance,
-            Function<File, Mono<UUID>> persistFile
+    @NotNull
+    private UUID postFile(
+            long sourceApplicationId,
+            @NotNull IncomingInstance incomingInstance,
+            @NotNull Function1<? super File, UUID> persistFile
     ) {
-        return persistFile.apply(
-                File.builder()
-                        .name(incomingInstance.getDokument().getFilnavn())
-                        .type(MediaType.parseMediaType(incomingInstance.getDokument().getFormat()))
-                        .sourceApplicationId(sourceApplicationId)
-                        .sourceApplicationInstanceId(incomingInstance.getInstansId())
-                        .encoding("UTF-8")
-                        .base64Contents(incomingInstance.getDokument().getFil())
-                        .build());
+        return persistFile.invoke(new File(
+                incomingInstance.getDokument().getFilnavn(),
+                sourceApplicationId,
+                incomingInstance.getInstansId(),
+                MediaType.parseMediaType(incomingInstance.getDokument().getFormat()),
+                "UTF-8",
+                incomingInstance.getDokument().getFil()
+        ));
     }
 }

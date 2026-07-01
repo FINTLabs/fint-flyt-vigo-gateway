@@ -1,26 +1,27 @@
 package no.novari.flyt.instance.gateway;
 
+import kotlin.jvm.functions.Function1;
+import no.novari.flyt.gateway.webinstance.model.File;
+import no.novari.flyt.gateway.webinstance.model.instance.InstanceObject;
 import no.novari.flyt.instance.gateway.model.vigo.*;
-import no.novari.flyt.instance.gateway.model.File;
-import no.novari.flyt.instance.gateway.model.InstanceObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import reactor.core.publisher.Mono;
 
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 class IncomingInstanceMappingServiceTest {
+    private static final String DOCUMENT_BASE64_CONTENTS = "ZG9rdW1lbnQ=";
+
     @Mock
-    Function<File, Mono<UUID>> persistFile;
+    Function1<File, UUID> persistFile;
 
     @InjectMocks
     private IncomingInstanceMappingService incomingInstanceMappingService;
@@ -29,20 +30,20 @@ class IncomingInstanceMappingServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        when(persistFile.apply(any(File.class))).thenReturn(Mono.just(UUID.randomUUID()));
+        when(persistFile.invoke(any(File.class))).thenReturn(UUID.randomUUID());
     }
 
     @Test
     void shouldReturnInstanceObjectWhenIncomingInstanceIsValid() {
         UUID uuid = UUID.randomUUID();
-        when(persistFile.apply(any(File.class))).thenReturn(Mono.just(uuid));
+        when(persistFile.invoke(any(File.class))).thenReturn(uuid);
 
         InstanceObject result = incomingInstanceMappingService
                 .map(
                         4L,
                         createValidIncomingInstanceWithTilleggsinformasjon().build(),
                         persistFile
-                ).block();
+                );
 
         Map<String, String> valuePerKey = result.getValuePerKey();
         assertEquals("Ola", valuePerKey.get("personaliaFornavn"));
@@ -75,14 +76,14 @@ class IncomingInstanceMappingServiceTest {
     @Test
     void shouldReturnInstanceObjectWhenIncomingInstanceDoesNotHaveTilleggsinformasjon() {
         UUID uuid = UUID.randomUUID();
-        when(persistFile.apply(any(File.class))).thenReturn(Mono.just(uuid));
+        when(persistFile.invoke(any(File.class))).thenReturn(uuid);
 
         InstanceObject result = incomingInstanceMappingService
                 .map(
                         4L,
                         createIncomingInstance().build(),
                         persistFile
-                ).block();
+                );
 
         Map<String, String> valuePerKey = result.getValuePerKey();
         assertEquals("Ola", valuePerKey.get("personaliaFornavn"));
@@ -114,13 +115,13 @@ class IncomingInstanceMappingServiceTest {
     @Test
     void shouldReturnInstanceObjectWhenIncomingInstanceDoesHaveSomeTilleggsinformasjon() {
         UUID uuid = UUID.randomUUID();
-        when(persistFile.apply(any(File.class))).thenReturn(Mono.just(uuid));
+        when(persistFile.invoke(any(File.class))).thenReturn(uuid);
 
         InstanceObject result = incomingInstanceMappingService.map(
                 4L,
                 createValidIncomingInstanceWithSomeTilleggsinformasjon(),
                 persistFile
-        ).block();
+        );
 
         Map<String, String> valuePerKey = result.getValuePerKey();
         assertEquals("Ola", valuePerKey.get("personaliaFornavn"));
@@ -139,14 +140,14 @@ class IncomingInstanceMappingServiceTest {
     @Test
     void shouldReturnInstanceObjectWhenIncomingInstanceDoesNotHaveDocument() {
         UUID uuid = UUID.randomUUID();
-        when(persistFile.apply(any(File.class))).thenReturn(Mono.just(uuid));
+        when(persistFile.invoke(any(File.class))).thenReturn(uuid);
 
         InstanceObject result = incomingInstanceMappingService
                 .map(
                         4L,
                         createIncomingInstanceWithoutDocument().build(),
                         persistFile
-                ).block();
+                );
 
         Map<String, String> valuePerKey = result.getValuePerKey();
         assertEquals("Ola", valuePerKey.get("personaliaFornavn"));
@@ -175,7 +176,7 @@ class IncomingInstanceMappingServiceTest {
                         4L,
                         createValidIncomingInstanceWithFodselsdatoAsNull().build(),
                         persistFile
-                ).block();
+                );
 
         assertEquals("", result.getValuePerKey().get("personaliaFodselsdato"));
     }
@@ -187,7 +188,7 @@ class IncomingInstanceMappingServiceTest {
                         4L,
                         createIncomingInstance().build(),
                         persistFile
-                ).block();
+                );
 
         assertEquals("311280", result.getValuePerKey().get("tilpassetFodselsdato1"));
         assertEquals("31.12.1980", result.getValuePerKey().get("tilpassetFodselsdato2"));
@@ -201,7 +202,7 @@ class IncomingInstanceMappingServiceTest {
                         4L,
                         createIncomingInstance().build(),
                         persistFile
-                ).block();
+                );
 
         assertEquals("Ola Nordmann Nordmannsen", result.getValuePerKey().get("tilpassetNavn1"));
         assertEquals("Nordmannsen Ola Nordmann", result.getValuePerKey().get("tilpassetNavn2"));
@@ -219,7 +220,7 @@ class IncomingInstanceMappingServiceTest {
                                         .fodselsdato("19-12-3100")
                                         .build()).build(),
                         persistFile
-                ).block();
+                );
 
         assertEquals("Ola Nordmannsen", result.getValuePerKey().get("tilpassetNavn1"));
         assertEquals("Nordmannsen Ola", result.getValuePerKey().get("tilpassetNavn2"));
@@ -238,7 +239,7 @@ class IncomingInstanceMappingServiceTest {
                                         .fodselsdato("19-12-3100")
                                         .build()).build(),
                         persistFile
-                ).block();
+                );
 
         assertEquals("Ola Nordmannsen", result.getValuePerKey().get("tilpassetNavn1"));
         assertEquals("Nordmannsen Ola", result.getValuePerKey().get("tilpassetNavn2"));
@@ -257,7 +258,7 @@ class IncomingInstanceMappingServiceTest {
                                         .fodselsdato("19-12-3100")
                                         .build()).build(),
                         persistFile
-                ).block();
+                );
 
         assertEquals("Ola Nordmannsen", result.getValuePerKey().get("tilpassetNavn1"));
         assertEquals("Nordmannsen Ola", result.getValuePerKey().get("tilpassetNavn2"));
@@ -274,10 +275,10 @@ class IncomingInstanceMappingServiceTest {
                                         .mellomnavn("Nordmann")
                                         .etternavn("Nordmannsen")
                                         .fodselsdato("19-12-3100")
-                                        .build())
+                                .build())
                                 .build(),
                         persistFile
-                ).block();
+                );
 
         assertEquals("", result.getValuePerKey().get("tilpassetFodselsdato1"));
         assertEquals("", result.getValuePerKey().get("tilpassetFodselsdato2"));
@@ -290,7 +291,7 @@ class IncomingInstanceMappingServiceTest {
                         4L,
                         createValidIncomingInstanceWithTilleggsinformasjon().build(),
                         persistFile
-                ).block();
+                );
 
         assertFalse(result.getValuePerKey().containsKey("instansId"));
     }
@@ -302,7 +303,7 @@ class IncomingInstanceMappingServiceTest {
                         4L,
                         createValidIncomingInstanceWithCompleteARSvar(),
                         persistFile
-                ).block();
+                );
 
         Map<String, String> valuePerKey = result.getValuePerKey();
         assertEquals("12345678901", valuePerKey.get("personaliaFodselsnummer"));
@@ -352,6 +353,7 @@ class IncomingInstanceMappingServiceTest {
                         .tittel("Dokumenttittel")
                         .dato("2021-01-01")
                         .filnavn("dokument.pdf")
+                        .fil(DOCUMENT_BASE64_CONTENTS)
                         .format("text/plain")
                         .build())
 
@@ -399,6 +401,7 @@ class IncomingInstanceMappingServiceTest {
                         .tittel("Dokumenttittel")
                         .dato("2021-01-01")
                         .filnavn("dokument.pdf")
+                        .fil(DOCUMENT_BASE64_CONTENTS)
                         .format("text/plain")
                         .build())
 
@@ -434,6 +437,7 @@ class IncomingInstanceMappingServiceTest {
                         .tittel("Dokumenttittel")
                         .dato("2021-01-01")
                         .filnavn("dokument.pdf")
+                        .fil(DOCUMENT_BASE64_CONTENTS)
                         .format("text/plain")
                         .build());
     }
@@ -465,6 +469,7 @@ class IncomingInstanceMappingServiceTest {
                         .tittel("Svar på årlig rapportering")
                         .dato("2026-01-01")
                         .filnavn("dokument.pdf")
+                        .fil(DOCUMENT_BASE64_CONTENTS)
                         .format("text/plain")
                         .build())
 

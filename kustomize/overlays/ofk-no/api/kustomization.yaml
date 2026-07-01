@@ -18,12 +18,14 @@ patches:
       - op: replace
         path: "/spec/orgId"
         value: "ofk.no"
-      - op: add
-        path: "/spec/url/basePath"
-        value: "/ofk-no"
       - op: replace
         path: "/spec/ingress/basePath"
         value: "/ofk-no/api/vigo"
+      - op: add
+        path: "/spec/env/-"
+        value:
+          name: "server.servlet.context-path"
+          value: "/ofk-no"
       - op: add
         path: "/spec/env/-"
         value:
@@ -35,6 +37,9 @@ patches:
       - op: replace
         path: "/spec/probes/liveness/path"
         value: "/ofk-no/actuator/health/liveness"
+      - op: replace
+        path: "/spec/probes/startup/path"
+        value: "/ofk-no/actuator/health"
       - op: replace
         path: "/spec/observability/metrics/path"
         value: "/ofk-no/actuator/prometheus"
