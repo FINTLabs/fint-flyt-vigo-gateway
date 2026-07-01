@@ -20,13 +20,29 @@ jobs:
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
           echo "shortname=$(echo "$BRANCH_NAME" | cut -c1-40)" >> $GITHUB_OUTPUT
 
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: gradle
+
+      - uses: gradle/actions/wrapper-validation@v6
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v6
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=raw,value=${{ steps.branch.outputs.shortname }}-{{sha}}
+            type=ref,event=branch,suffix=-{{sha}}
+            type=ref,event=pr,suffix=-{{sha}}
             type=sha,prefix={{date 'YYYY-MM-DD-'}},enable={{is_default_branch}}
             type=raw,value=latest,enable={{is_default_branch}}
 
@@ -37,15 +53,20 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
       - name: Build and push
         uses: docker/build-push-action@v7
         with:
           push: ${{ github.actor != 'dependabot[bot]' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   deploy-to-aks:
-    name: ${{ format('{0}-{1}', matrix.org, matrix.cluster) }}
+    name: ${{ matrix.org }}-${{ matrix.cluster }}
     if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     needs: build-and-publish
@@ -98,11 +119,17 @@ jobs:
             echo "To deploy, merge to ${{ github.event.repository.default_branch }}." 
           } >> $GITHUB_STEP_SUMMARY
 
+      - name: Get namespace from config file
+        id: namespace
+        run: |
+          namespace=$(yq '.metadata.namespace' ${{ steps.bake.outputs.manifestsBundle }} | head -n 1 | sed 's/^null$/default/')
+          echo "name=$namespace" >> $GITHUB_OUTPUT
+
       - name: Deploy to Kubernetes
         if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch) || matrix.deploy-every-branch == true
-        uses: azure/k8s-deploy@v5.0.3
+        uses: azure/k8s-deploy@v6.0.0
         with:
           action: deploy
           manifests: ${{ steps.bake.outputs.manifestsBundle }}
-          images: ${{ needs.build-and-publish.outputs.tags }}
-          namespace: ${{ matrix.org }}
+          images: ${{ matrix.use-image-from-overlay && 'none:none' || needs.build-and-publish.outputs.tags }}
+          namespace: ${{ steps.namespace.outputs.name }}
