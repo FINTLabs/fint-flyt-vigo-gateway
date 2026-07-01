@@ -46,7 +46,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    implementation 'no.novari:flyt-web-instance-gateway:2.0.2'
+    implementation 'no.novari:flyt-web-instance-gateway:2.3.0'
 
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
