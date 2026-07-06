@@ -47,14 +47,14 @@ jobs:
     steps:
       - name: Determine resource group
         id: rg
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const p='${{ inputs.cluster }}'.split('-'); return `rg-${p[0]}-${p[1]}`;
           result-encoding: string
       - name: Determine env key
         id: environment
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: return '${{ inputs.cluster }}'.split('-')[1];
           result-encoding: string
