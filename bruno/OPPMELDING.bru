@@ -1,13 +1,13 @@
 meta {
   name: OPPMELDING
   type: http
-  seq: 11
+  seq: 13
 }
 
 post {
   url: https://flyt.vigoiks.no/{{env}}{{org}}/api/intern/metadata
   body: json
-  auth: none
+  auth: inherit
 }
 
 body:json {
