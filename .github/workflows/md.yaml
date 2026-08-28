@@ -98,7 +98,7 @@ jobs:
       - uses: azure/login@v3
         with:
           creds: ${{ secrets[ steps.secretname.outputs.SECRET_NAME ] }}
-      - uses: azure/aks-set-context@v4
+      - uses: azure/aks-set-context@v5
         with:
           cluster-name: ${{ env.CLUSTER_NAME }}
           resource-group: ${{ steps.rg.outputs.result }}
