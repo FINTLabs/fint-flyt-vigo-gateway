@@ -1,0 +1,5 @@
+variables:
+  - name: org
+    value: nfk-no
+  - name: env
+    value: ""
