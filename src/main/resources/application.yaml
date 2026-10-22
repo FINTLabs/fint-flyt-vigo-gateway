@@ -4,7 +4,7 @@ fint:
 novari:
   flyt:
     web-instance-gateway:
-      max-request-size: 500MB
+      max-request-size: 1024MB
 
 logging:
   level:
@@ -18,8 +18,8 @@ server:
 spring:
   servlet:
     multipart:
-      max-file-size: 500MB
-      max-request-size: 500MB
+      max-file-size: 1024MB
+      max-request-size: 1024MB
   profiles:
     include:
       - flyt-kafka
