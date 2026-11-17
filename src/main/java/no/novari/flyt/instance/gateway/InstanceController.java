@@ -1,8 +1,8 @@
 package no.novari.flyt.instance.gateway;
 
 import lombok.extern.slf4j.Slf4j;
-import no.novari.flyt.gateway.webinstance.InstanceProcessor;
-import no.novari.flyt.gateway.webinstance.HistoryClient;
+import no.novari.flyt.gateway.instance.InstanceProcessor;
+import no.novari.flyt.gateway.instance.HistoryClient;
 import no.novari.flyt.webresourceserver.security.client.sourceapplication.SourceApplicationAuthorizationService;
 import no.novari.flyt.instance.gateway.model.Status;
 import no.novari.flyt.instance.gateway.model.vigo.IncomingInstance;

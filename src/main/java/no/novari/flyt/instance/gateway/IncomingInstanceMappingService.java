@@ -2,9 +2,9 @@ package no.novari.flyt.instance.gateway;
 
 import lombok.extern.slf4j.Slf4j;
 import kotlin.jvm.functions.Function1;
-import no.novari.flyt.gateway.webinstance.InstanceMapper;
-import no.novari.flyt.gateway.webinstance.model.File;
-import no.novari.flyt.gateway.webinstance.model.instance.InstanceObject;
+import no.novari.flyt.gateway.instance.InstanceMapper;
+import no.novari.flyt.gateway.instance.model.File;
+import no.novari.flyt.gateway.instance.model.instance.InstanceObject;
 import no.novari.flyt.instance.gateway.model.vigo.*;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.MediaType;
