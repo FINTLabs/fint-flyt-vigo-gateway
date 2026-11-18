@@ -1,8 +1,8 @@
 package no.novari.flyt.instance.gateway;
 
 import kotlin.jvm.functions.Function1;
-import no.novari.flyt.gateway.webinstance.model.File;
-import no.novari.flyt.gateway.webinstance.model.instance.InstanceObject;
+import no.novari.flyt.gateway.instance.model.File;
+import no.novari.flyt.gateway.instance.model.instance.InstanceObject;
 import no.novari.flyt.instance.gateway.model.vigo.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
