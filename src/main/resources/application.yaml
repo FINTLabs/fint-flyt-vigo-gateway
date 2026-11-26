@@ -3,7 +3,7 @@ fint:
 
 novari:
   flyt:
-    web-instance-gateway:
+    gateway-starter:
       max-request-size: 1024MB
 
 logging:
