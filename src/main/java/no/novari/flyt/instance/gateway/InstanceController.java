@@ -2,7 +2,7 @@ package no.novari.flyt.instance.gateway;
 
 import lombok.extern.slf4j.Slf4j;
 import no.novari.flyt.gateway.webinstance.InstanceProcessor;
-import no.novari.flyt.gateway.webinstance.kafka.ArchiveCaseIdRequestService;
+import no.novari.flyt.gateway.webinstance.HistoryClient;
 import no.novari.flyt.webresourceserver.security.client.sourceapplication.SourceApplicationAuthorizationService;
 import no.novari.flyt.instance.gateway.model.Status;
 import no.novari.flyt.instance.gateway.model.vigo.IncomingInstance;
@@ -19,18 +19,18 @@ import static no.novari.flyt.webresourceserver.UrlPaths.EXTERNAL_API;
 public class InstanceController {
 
     private final InstanceProcessor<IncomingInstance> instanceProcessor;
-    private final ArchiveCaseIdRequestService archiveCaseIdRequestService;
+    private final HistoryClient historyClient;
     private final SourceApplicationAuthorizationService sourceApplicationAuthorizationService;
     private final Observability observability;
 
     public InstanceController(
             InstanceProcessor<IncomingInstance> instanceProcessor,
-            ArchiveCaseIdRequestService archiveCaseIdRequestService,
+            HistoryClient historyClient,
             SourceApplicationAuthorizationService sourceApplicationAuthorizationService,
             Observability observability
     ) {
         this.instanceProcessor = instanceProcessor;
-        this.archiveCaseIdRequestService = archiveCaseIdRequestService;
+        this.historyClient = historyClient;
         this.sourceApplicationAuthorizationService = sourceApplicationAuthorizationService;
         this.observability = observability;
     }
@@ -59,7 +59,7 @@ public class InstanceController {
 
         log.debug("Get status for instance: {} in sourceApplication: {}", instanceId, applicationId);
 
-        String caseId = archiveCaseIdRequestService.getArchiveCaseId(applicationId, instanceId);
+        String caseId = historyClient.getArchiveInstanceId(applicationId, instanceId);
         if (caseId != null) {
             return ResponseEntity.ok(Status.builder()
                     .instansId(instanceId)
